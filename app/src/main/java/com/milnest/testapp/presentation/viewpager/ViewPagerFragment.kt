@@ -24,11 +24,6 @@ class ViewPagerFragment : BaseFragment(), ViewPagerView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_pager, container, false)
-    }
-
-    override fun onStart() {
-        super.onStart()
         var page = layoutInflater.inflate(R.layout.page_layout, null)
         page.findViewById<TextView>(R.id.page_text).setText("PAGE 1")
         presenter.addPage(page, "1")
@@ -40,8 +35,12 @@ class ViewPagerFragment : BaseFragment(), ViewPagerView {
         page = layoutInflater.inflate(R.layout.page_layout, null)
         page.findViewById<TextView>(R.id.page_text).setText("PAGE 3")
         presenter.addPage(page, "3")
+        
+        return inflater.inflate(R.layout.fragment_view_pager, container, false)
+    }
 
-        /*val viewPager = view!!.findViewById<ViewPager>(R.id.view_pager)*/
+    override fun onStart() {
+        super.onStart()
         presenter.setPagerAdapter(view!!.findViewById(R.id.view_pager))
     }
 

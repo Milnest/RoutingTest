@@ -7,10 +7,13 @@ import android.view.MenuItem
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
+import com.milnest.testapp.presentation.diagram.DiagramFragment
 import com.milnest.testapp.presentation.splash.SplashFragment
 import com.milnest.testapp.presentation.start.StartFragment
+import com.milnest.testapp.presentation.viewpager.ViewPagerFragment
 import com.milnest.testapp.router.AppRouter
 import com.milnest.testapp.router.FragType
+import ru.terrakok.cicerone.android.SupportFragmentNavigator
 
 
 val FragmentActivity?.router: AppRouter
@@ -27,9 +30,17 @@ class MainActivity : MainView, MvpAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.setFragmentManager(supportFragmentManager)
-        //router.fragmentManager = supportFragmentManager
-        //AppRouter.navigateTo(FragType.SPLASH)
         presenter.showSplash()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.setNavigator()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.removeNavigator()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

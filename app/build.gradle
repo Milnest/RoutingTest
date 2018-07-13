@@ -34,9 +34,13 @@ dependencies {
     compile 'com.arello-mobile:moxy-app-compat:1.5.5'
     kapt 'com.arello-mobile:moxy-compiler:1.5.5'
     implementation 'com.android.support:design:28.0.0-alpha3'
+    implementation 'ru.terrakok.cicerone:cicerone:1.0'
 }
 repositories {
     mavenCentral()
+    maven {
+        url 'https://dl.bintray.com/terrakok/terramaven/'
+    }
 }
 
 apply plugin: 'kotlin-android-extensions'
