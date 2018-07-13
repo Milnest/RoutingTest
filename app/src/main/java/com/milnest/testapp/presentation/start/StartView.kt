@@ -1,4 +1,4 @@
-package com.milnest.testapp
+package com.milnest.testapp.presentation.start
 
 import com.arellomobile.mvp.MvpView
 

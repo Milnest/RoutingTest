@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/diagramFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.diagram.DiagramFragment">
+
+    <com.milnest.testapp.customview.CircleDiagramView
+        android:id="@+id/diagram"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        app:cd_value="0.55"
+        app:cd_base_color="@color/colorGray_100"
+        app:cd_base_color_line="@color/colorBlueGray_500"
+        app:cd_second_color="@color/colorGray_300"
+        app:cd_second_color_line="@color/colorBlueGray_900"
+        app:cd_line_color="@color/colorBrown_200"
+        app:cd_text_color="@color/colorBlack"
+        app:cd_text_size="40sp"
+        app:cd_h= "15dp"/>
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="hello world"
+        android:gravity="center"/>-->
+
+</android.support.constraint.ConstraintLayout>
