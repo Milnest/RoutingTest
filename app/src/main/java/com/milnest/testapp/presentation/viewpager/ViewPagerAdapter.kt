@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager
 import android.view.ViewGroup
 
 
-class ViewPagerAdapter(val pages: List<Pair<View, String>>): PagerAdapter() {
+class ViewPagerAdapter(val pages: List<Pair<View, String>>) : PagerAdapter() {
     override fun isViewFromObject(p0: View, p1: Any): Boolean {
         return p0.equals(p1)
     }
@@ -17,7 +17,9 @@ class ViewPagerAdapter(val pages: List<Pair<View, String>>): PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val v = pages.get(position).first as ViewGroup
-        (container as ViewPager).addView(v, 0)
+        if (v.parent == null) {
+            (container as ViewPager).addView(v, 0)
+        }
         return v
     }
 
@@ -28,4 +30,6 @@ class ViewPagerAdapter(val pages: List<Pair<View, String>>): PagerAdapter() {
     override fun getPageTitle(position: Int): CharSequence? {
         return pages.get(position).second
     }
+
+
 }

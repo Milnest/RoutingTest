@@ -1,31 +1,49 @@
 package com.milnest.testapp.presentation.main
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
 import com.milnest.testapp.R
-import com.milnest.testapp.presentation.diagram.DiagramFragment
-import com.milnest.testapp.presentation.splash.SplashFragment
-import com.milnest.testapp.presentation.start.StartFragment
-import com.milnest.testapp.presentation.viewpager.ViewPagerFragment
-import com.milnest.testapp.router.AppRouter
+import com.milnest.testapp.router.CustomNavigator
 import com.milnest.testapp.router.FragType
-import ru.terrakok.cicerone.android.SupportFragmentNavigator
+import java.io.Serializable
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
     private lateinit var fragmentManager: FragmentManager
 
+    private val navigator : CustomNavigator
+    get() = object : CustomNavigator(fragmentManager, R.id.container) {
+        override fun createFragment(screenKey: String, data: Any?): Fragment {
+            return FragType.valueOf(screenKey).createFragment()
+        }
+
+        override fun showSystemMessage(message: String, type: Int) {
+            //viewState.showMessage(message)
+        }
+
+        override fun exit() {
+            viewState.finish()
+        }
+    }
+
+
     fun setFragmentManager(supportFragmentManager: FragmentManager) {
         fragmentManager = supportFragmentManager
     }
 
-    fun showSplash(){
+    fun onCreate(savedInstanceState: Bundle?) {
         /*AppRouter.fragmentManager = fragmentManager
         AppRouter.navigateTo(FragType.SPLASH)*/
-        App.getRouter().navigateTo(FragType.SPLASH.name)
+        if (savedInstanceState != null) {
+            navigator.setScreenNames(savedInstanceState.getSerializable(MainPresenter.STATE_SCREEN_NAMES) as ArrayList<String>)
+        }else{
+            App.getRouter().navigateTo(FragType.SPLASH.name)
+        }
+
     }
 
     fun backWasPreseed(){
@@ -33,7 +51,11 @@ class MainPresenter : MvpPresenter<MainView>() {
         App.getRouter().exit()
     }
 
-    val navigator : SupportFragmentNavigator
+    fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable(STATE_SCREEN_NAMES, navigator.getScreenNames() as Serializable)
+    }
+
+    /*val navigator : SupportFragmentNavigator
         get() = object : SupportFragmentNavigator(fragmentManager, R.id.container) {
             override fun createFragment(screenKey: String?, data: Any?): Fragment {
                 when(screenKey){
@@ -52,7 +74,10 @@ class MainPresenter : MvpPresenter<MainView>() {
             override fun showSystemMessage(message: String?) {
             }
 
-        }
+        }*/
+
+
+
 
     fun setNavigator(){
         App.getNavigatorHolder().setNavigator(navigator)
@@ -60,5 +85,10 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun removeNavigator(){
         App.getNavigatorHolder().removeNavigator()
+    }
+
+    companion object {
+        private val STATE_SCREEN_NAMES = "state_screen_names"
+        private var currentType = FragType.SPLASH
     }
 }

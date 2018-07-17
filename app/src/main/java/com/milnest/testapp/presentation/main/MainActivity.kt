@@ -1,19 +1,13 @@
 package com.milnest.testapp.presentation.main
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.os.PersistableBundle
 import android.support.v4.app.FragmentActivity
 import android.view.MenuItem
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
-import com.milnest.testapp.presentation.diagram.DiagramFragment
-import com.milnest.testapp.presentation.splash.SplashFragment
-import com.milnest.testapp.presentation.start.StartFragment
-import com.milnest.testapp.presentation.viewpager.ViewPagerFragment
 import com.milnest.testapp.router.AppRouter
-import com.milnest.testapp.router.FragType
-import ru.terrakok.cicerone.android.SupportFragmentNavigator
 
 
 val FragmentActivity?.router: AppRouter
@@ -30,7 +24,7 @@ class MainActivity : MainView, MvpAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.setFragmentManager(supportFragmentManager)
-        presenter.showSplash()
+        presenter.onCreate(savedInstanceState)
     }
 
     override fun onResume() {
@@ -51,7 +45,24 @@ class MainActivity : MainView, MvpAppCompatActivity() {
         return true
     }
 
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        if (outState != null) {
+            presenter.onSaveInstanceState(outState)
+        }
+    }
+
     override fun onBackPressed() {
-        presenter.backWasPreseed()
+        if (supportFragmentManager.backStackEntryCount > 1){
+            presenter.backWasPreseed()
+        } else {
+            super.onBackPressed()
+            finish()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        presenter.onSaveInstanceState(outState)
     }
 }

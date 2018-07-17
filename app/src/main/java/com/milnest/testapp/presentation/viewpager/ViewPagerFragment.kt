@@ -1,7 +1,6 @@
 package com.milnest.testapp.presentation.viewpager
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,7 @@ class ViewPagerFragment : BaseFragment(), ViewPagerView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        presenter.clearPageList() //TODO: убрать этот костыль
         var page = layoutInflater.inflate(R.layout.page_layout, null)
         page.findViewById<TextView>(R.id.page_text).setText("PAGE 1")
         presenter.addPage(page, "1")
@@ -35,16 +34,18 @@ class ViewPagerFragment : BaseFragment(), ViewPagerView {
         page = layoutInflater.inflate(R.layout.page_layout, null)
         page.findViewById<TextView>(R.id.page_text).setText("PAGE 3")
         presenter.addPage(page, "3")
-        
+
         return inflater.inflate(R.layout.fragment_view_pager, container, false)
     }
 
     override fun onStart() {
         super.onStart()
-        presenter.setPagerAdapter(view!!.findViewById(R.id.view_pager))
+        val pager: ViewPager = view!!.findViewById(R.id.view_pager)
+        /*pager.offscreenPageLimit = 3*/
+        presenter.setPagerAdapter(pager)
     }
 
     override fun getFragType(): FragType {
-        return  FragType.VIEW_PAGER
+        return FragType.VIEW_PAGER
     }
 }

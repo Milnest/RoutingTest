@@ -21,4 +21,11 @@
         android:textSize="20sp"
         android:text="View Pager"/>
 
+    <Button
+        android:id="@+id/button_to_task_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Task List"/>
+
 </LinearLayout>

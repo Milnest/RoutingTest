@@ -1,15 +1,10 @@
 package com.milnest.testapp.presentation.splash
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.arellomobile.mvp.MvpFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
-
 import com.milnest.testapp.R
 import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.BaseFragment

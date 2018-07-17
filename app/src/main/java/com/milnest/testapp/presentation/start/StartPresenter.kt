@@ -5,7 +5,6 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
 import com.milnest.testapp.R
-import com.milnest.testapp.router.AppRouter
 import com.milnest.testapp.router.FragType
 
 @InjectViewState
