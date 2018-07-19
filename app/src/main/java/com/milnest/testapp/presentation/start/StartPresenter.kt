@@ -21,6 +21,9 @@ class StartPresenter :MvpPresenter<StartView>(){
                     /*AppRouter.navigateTo(FragType.VIEW_PAGER)*/
                     App.getRouter().navigateTo(FragType.VIEW_PAGER.name)
                 }
+                R.id.button_to_task_list ->{
+                    App.getRouter().navigateTo(FragType.TASK_LIST_MAIN.name)
+                }
             }
         }
     }

@@ -6,15 +6,15 @@ import android.util.Log
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.commands.*
 
-abstract class CustomNavigator protected constructor(private val fragmentManager: FragmentManager, private val containerId: Int/*, listener: OnChangeFragmentListener?*/) : Navigator {
+abstract class CustomNavigator protected constructor(private val fragmentManager: FragmentManager, private val containerId: Int/*, splitListener: OnChangeFragmentListener?*/) : Navigator {
     private var screenNames: MutableList<String> = ArrayList()
 
     val lastScreenName: String
         get() = if (screenNames.size == 0) FragType.SPLASH.name else screenNames[screenNames.size - 1]
 
     /*init {
-        if (listener != null)
-            fragmentManager.addOnBackStackChangedListener { listener.onChangeFragment() }
+        if (splitListener != null)
+            fragmentManager.addOnBackStackChangedListener { splitListener.onChangeFragment() }
     }*/
 
     @Synchronized override fun applyCommand(command: Command) {

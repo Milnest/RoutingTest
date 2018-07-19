@@ -9,26 +9,30 @@ import com.milnest.testapp.App
 import com.milnest.testapp.R
 import com.milnest.testapp.router.CustomNavigator
 import com.milnest.testapp.router.FragType
+import com.milnest.testapp.tasklist.ID
+import com.milnest.testapp.tasklist.presentation.main.TaskListMainFragment
 import java.io.Serializable
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
     private lateinit var fragmentManager: FragmentManager
 
-    private val navigator : CustomNavigator
-    get() = object : CustomNavigator(fragmentManager, R.id.container) {
-        override fun createFragment(screenKey: String, data: Any?): Fragment {
-            return FragType.valueOf(screenKey).createFragment()
-        }
+    private val navigator: CustomNavigator
+        get() = object : CustomNavigator(fragmentManager, R.id.container) {
+            override fun createFragment(screenKey: String, data: Any?): Fragment {
+                val bundle = Bundle()
+                if(data != null) bundle.putInt(ID, (data as Int))
+                return FragType.valueOf(screenKey).createFragment(bundle)
+            }
 
-        override fun showSystemMessage(message: String, type: Int) {
-            //viewState.showMessage(message)
-        }
+            override fun showSystemMessage(message: String, type: Int) {
+                //viewState.showMessage(message)
+            }
 
-        override fun exit() {
-            viewState.finish()
+            override fun exit() {
+                viewState.finish()
+            }
         }
-    }
 
 
     fun setFragmentManager(supportFragmentManager: FragmentManager) {
@@ -40,15 +44,18 @@ class MainPresenter : MvpPresenter<MainView>() {
         AppRouter.navigateTo(FragType.SPLASH)*/
         if (savedInstanceState != null) {
             navigator.setScreenNames(savedInstanceState.getSerializable(MainPresenter.STATE_SCREEN_NAMES) as ArrayList<String>)
-        }else{
+        } else {
             App.getRouter().navigateTo(FragType.SPLASH.name)
         }
 
     }
 
-    fun backWasPreseed(){
-        /*AppRouter.back()*/
-        App.getRouter().exit()
+    fun backWasPreseed() {
+        if (fragmentManager.backStackEntryCount > 1) {
+            App.getRouter().exit()
+        } else {
+            viewState.finish()
+        }
     }
 
     fun onSaveInstanceState(outState: Bundle) {
@@ -77,13 +84,11 @@ class MainPresenter : MvpPresenter<MainView>() {
         }*/
 
 
-
-
-    fun setNavigator(){
+    fun setNavigator() {
         App.getNavigatorHolder().setNavigator(navigator)
     }
 
-    fun removeNavigator(){
+    fun removeNavigator() {
         App.getNavigatorHolder().removeNavigator()
     }
 

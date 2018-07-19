@@ -1,6 +1,8 @@
 package com.milnest.testapp
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import com.milnest.testapp.router.CustomRouter
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.NavigatorHolder
@@ -12,13 +14,14 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        //INSTANCE = this
+        context = this
         cicerone = Cicerone.create(CustomRouter())
     }
 
     companion object {
-        //lateinit var INSTANCE: App
-       /* private var cicerone: Cicerone<Router>? = null*/
+        @SuppressLint("StaticFieldLeak")
+        lateinit var context: Context
+            private set
         private var cicerone: Cicerone<CustomRouter>? = null
 
         fun getNavigatorHolder(): NavigatorHolder {

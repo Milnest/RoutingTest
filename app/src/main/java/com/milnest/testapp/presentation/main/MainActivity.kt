@@ -7,18 +7,11 @@ import android.view.MenuItem
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
-import com.milnest.testapp.router.AppRouter
-
-
-val FragmentActivity?.router: AppRouter
-    get() = (this as MainActivity).router
 
 class MainActivity : MainView, MvpAppCompatActivity() {
 
     @InjectPresenter
     lateinit var presenter: MainPresenter
-
-    val router : AppRouter = AppRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +46,7 @@ class MainActivity : MainView, MvpAppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 1){
-            presenter.backWasPreseed()
-        } else {
-            super.onBackPressed()
-            finish()
-        }
+        presenter.backWasPreseed()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

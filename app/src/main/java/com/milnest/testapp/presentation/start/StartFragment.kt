@@ -1,6 +1,7 @@
 package com.milnest.testapp.presentation.start
 
 import android.os.Bundle
+import android.support.v7.app.ActionBar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,6 @@ import android.widget.Button
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
 import com.milnest.testapp.presentation.main.MainActivity
-import com.milnest.testapp.presentation.main.router
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
 import kotlinx.android.synthetic.main.fragment_start.*
@@ -19,9 +19,16 @@ class StartFragment : BaseFragment(), StartView {
     lateinit var presenter: StartPresenter
 
     lateinit var diagButton : Button
+
+    var actBar: ActionBar? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         //presenter.setFragmentManager(activity!!.supportFragmentManager)
         super.onCreate(savedInstanceState)
+        actBar = (activity as MainActivity).supportActionBar
+        actBar?.title = "Start"
+        actBar?.setHomeButtonEnabled(true)
+        actBar?.setDisplayHomeAsUpEnabled(true)
+        actBar?.show()
     }
 
     override fun getFragType(): FragType {
@@ -31,8 +38,6 @@ class StartFragment : BaseFragment(), StartView {
     override fun onStart() {
         super.onStart()
         bindViews()
-
-        activity.router //TODO: роутер здесь
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -43,15 +48,9 @@ class StartFragment : BaseFragment(), StartView {
     }
 
     private fun bindViews() {
-        /*diagButton= view!!.findViewById(R.id.button_to_diag)
-        diagButton.setOnClickListener(presenter.onClickListener)*/
         button_to_view_pager.setOnClickListener(presenter.onClickListener)
         button_to_diag.setOnClickListener(presenter.onClickListener)
-        val actBar = (activity as MainActivity).supportActionBar
-        actBar?.title = "Start"
-        actBar?.setHomeButtonEnabled(true)
-        actBar?.setDisplayHomeAsUpEnabled(true)
-        actBar?.show()
+        button_to_task_list.setOnClickListener(presenter.onClickListener)
     }
 }
 
