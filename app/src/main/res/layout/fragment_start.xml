@@ -28,4 +28,11 @@
         android:textSize="20sp"
         android:text="Task List"/>
 
+    <Button
+        android:id="@+id/button_to_demo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Want demo"/>
+
 </LinearLayout>

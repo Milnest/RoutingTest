@@ -41,6 +41,8 @@ class MainPresenter : MvpPresenter<MainView>(){
     val linearLayoutManager = LinearLayoutManager(App.context)
     val gridLayoutManager = GridLayoutManager(App.context, 2)
 
+    var rep = App.appComponent.dbRep()
+
     fun setAdapter(itemsView: RecyclerView) {
         if (curAdapterType == LINEAR_TYPE) {
             itemsView.adapter = adapterGrid
@@ -66,7 +68,7 @@ class MainPresenter : MvpPresenter<MainView>(){
             when (result.requestCode) {
                 CAMERA_RESULT -> {
                     try {
-                        DBRepository.addTask("", Task.TYPE_ITEM_IMAGE, photoFile.canonicalPath)
+                        rep.addTask("", Task.TYPE_ITEM_IMAGE, photoFile.canonicalPath)
                         adaptersUpdateData()
                     } catch (ex: Exception) {
                         notifToActivity(R.string.no_external)
@@ -86,8 +88,8 @@ class MainPresenter : MvpPresenter<MainView>(){
                                         imgFile.name, imgFile.name)
                                 return@map imgFile.canonicalPath
                             }
-                            .map { filePath: String -> (DBRepository.addTask("", Task.TYPE_ITEM_IMAGE, filePath)) }
-                            .subscribe(object : Observer<Unit> {
+                            .map { filePath: String -> (rep.addTask("", Task.TYPE_ITEM_IMAGE, filePath)) }
+                            .subscribe(object : Observer<Unit?> {
                                 override fun onComplete() {}
 
                                 override fun onSubscribe(d: Disposable) {}
@@ -107,8 +109,8 @@ class MainPresenter : MvpPresenter<MainView>(){
     }
 
     private fun adaptersUpdateData() {
-        if (curAdapterType == LINEAR_TYPE) adapter.setData(DBRepository.getAllTasks())
-        else adapterGrid.setData(DBRepository.getAllTasks())
+        if (curAdapterType == LINEAR_TYPE) adapter.setData(rep.getAllTasks())
+        else adapterGrid.setData(rep.getAllTasks())
     }
 
     private fun adaptersSearchData(searchDynamicTask: MutableList<Task>) {
@@ -167,7 +169,7 @@ class MainPresenter : MvpPresenter<MainView>(){
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                adaptersSearchData(DBRepository.searchDynamicTask(newText))
+                adaptersSearchData(rep.searchDynamicTask(newText))
                 return true
             }
         }
@@ -213,7 +215,7 @@ class MainPresenter : MvpPresenter<MainView>(){
 
             override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                 if (curPosDelete != -1) {
-                    DBRepository.deleteTask(adapter.getItemId(curPosDelete))
+                    rep.deleteTask(adapter.getItemId(curPosDelete))
                     adaptersUpdateData()
                     viewState.closeActionBar()
                 }

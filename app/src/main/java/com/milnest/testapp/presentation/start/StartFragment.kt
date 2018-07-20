@@ -51,6 +51,7 @@ class StartFragment : BaseFragment(), StartView {
         button_to_view_pager.setOnClickListener(presenter.onClickListener)
         button_to_diag.setOnClickListener(presenter.onClickListener)
         button_to_task_list.setOnClickListener(presenter.onClickListener)
+        button_to_demo.setOnClickListener(presenter.onClickListener)
     }
 }
 

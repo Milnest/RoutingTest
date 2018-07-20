@@ -16,10 +16,12 @@ class TextTaskPresenter : MvpPresenter<TextTaskView>() {
     private var task = Task(Task.TYPE_ITEM_TEXT)
     var translateInteractor : TranslateInteractor? = null
 
+    var rep = App.appComponent.dbRep() //TODO: если не будет работать при смене конфига - перенести в онкриэйт
+
     fun setStartText(extras: Bundle?) {
         if (extras != null){
             val taskId = extras.getInt(ID)
-            task = DBRepository.getTaskById(taskId) as Task
+            task = rep.getTaskById(taskId) as Task
             viewState.setText(task.title, task.data)
         }
     }
@@ -27,7 +29,7 @@ class TextTaskPresenter : MvpPresenter<TextTaskView>() {
     fun saveClicked(title : String, text:String) {
         task.title = title
         task.data = text
-        DBRepository.saveTask(task)
+        rep.saveTask(task)
         closeView()
     }
 

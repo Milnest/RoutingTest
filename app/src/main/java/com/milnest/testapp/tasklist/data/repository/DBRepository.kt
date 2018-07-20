@@ -13,10 +13,10 @@ import com.milnest.testapp.tasklist.data.db.TaskDatabaseHelper
  * Created by t-yar on 21.04.2018.
  */
 
-object DBRepository{
+class DBRepository : IDataRepository{
     private var db: SQLiteDatabase = TaskDatabaseHelper(App.context).writableDatabase
 
-    fun getAllTasks(): MutableList<Task> {
+    override fun getAllTasks(): MutableList<Task> {
         val cursor = db.query(TaskDatabaseHelper.TABLE, null,
                 null, null, null, null, null)
         val list = cursorToList(cursor)
@@ -46,7 +46,7 @@ object DBRepository{
         return taskList
     }
 
-    fun addTask(name: String, type: Int, content: String) {
+    override fun addTask(name: String, type: Int, content: String) {
         try {
             val cv = ContentValues()
             cv.put(TaskDatabaseHelper.COLUMN_NAME, name)
@@ -59,7 +59,7 @@ object DBRepository{
 
     }
 
-    fun getTaskById(id: Int): Task? {
+    override fun getTaskById(id: Int): Task? {
         try {
             val cursor = db.query(TaskDatabaseHelper.TABLE, null,
                     TaskDatabaseHelper.COLUMN_ID + "=$id", null, null, null, null)
@@ -83,7 +83,7 @@ object DBRepository{
         }
     }
 
-    fun updateTask(id: Int, name: String, type: Int, content: String) {
+    override fun updateTask(id: Int, name: String, type: Int, content: String) {
         val cv = ContentValues()
         cv.put(TaskDatabaseHelper.COLUMN_NAME, name)
         cv.put(TaskDatabaseHelper.COLUMN_TYPE, type)
@@ -94,18 +94,18 @@ object DBRepository{
                 arrayOf(id.toString())).toLong()
     }
 
-    fun saveTask(task: Task) {
+    override fun saveTask(task: Task) {
         if (getTaskById(task.id) != null && task.id != -1)
             updateTask(task.id, task.title, task.type, task.data)
         else addTask(task.title, task.type, task.data)
     }
 
-    fun deleteTask(id: Long) {
+    override fun deleteTask(id: Long) {
         db.delete(TaskDatabaseHelper.TABLE, TaskDatabaseHelper.COLUMN_ID +
                 " =?", arrayOf(id.toString()))
     }
 
-    fun searchDynamicTask(data: String): MutableList<Task> {
+    override fun searchDynamicTask(data: String): MutableList<Task> {
         val cursor = db.rawQuery("SELECT * FROM task_table " +
                 "WHERE name LIKE '%$data%' OR content LIKE '%$data%'", null)
         val list = cursorToList(cursor)

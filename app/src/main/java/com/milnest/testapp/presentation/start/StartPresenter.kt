@@ -1,6 +1,7 @@
 package com.milnest.testapp.presentation.start
 
 import android.view.View
+import android.widget.Toast
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
@@ -23,6 +24,25 @@ class StartPresenter :MvpPresenter<StartView>(){
                 }
                 R.id.button_to_task_list ->{
                     App.getRouter().navigateTo(FragType.TASK_LIST_MAIN.name)
+                }
+                R.id.button_to_demo ->{
+                    if(App.sharPref.contains(App.APP_PREFERENCES_IS_DEMO)) {
+                        if (!App.sharPref.getBoolean(App.APP_PREFERENCES_IS_DEMO, false)){
+                            App.sharPref.edit().putBoolean(App.APP_PREFERENCES_IS_DEMO, true).apply()
+                            App.newAppComponent(true)
+                        }
+                        else {
+                            App.sharPref.edit().putBoolean(App.APP_PREFERENCES_IS_DEMO, false).apply()
+                            App.newAppComponent(false)
+                        }
+                    }
+//                    App.sharPref.edit().putBoolean(App.APP_PREFERENCES_IS_DEMO, true).apply()
+                    //--//
+//                    App.getRouter().showSystemMessage("Перезапуск", Toast.LENGTH_SHORT)
+//                    App.getRouter().exit()
+//                    App.getRouter().exit()
+                    //--//
+//                    App.newAppComponent(true)
                 }
             }
         }

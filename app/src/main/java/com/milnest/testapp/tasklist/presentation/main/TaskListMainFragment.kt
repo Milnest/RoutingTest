@@ -95,6 +95,7 @@ class TaskListMainFragment : BaseFragment(), MainView {
         searchView.setOnQueryTextFocusChangeListener(presenter.searchChangeFocus())
     }
 
+
     val splitListener
     get() = object : MenuItem.OnMenuItemClickListener {
         override fun onMenuItemClick(p0: MenuItem?): Boolean {
