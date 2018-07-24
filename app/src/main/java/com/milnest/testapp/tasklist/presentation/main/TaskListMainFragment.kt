@@ -30,6 +30,7 @@ class TaskListMainFragment : BaseFragment(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        retainInstance = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -125,6 +126,11 @@ class TaskListMainFragment : BaseFragment(), MainView {
     override fun onResume() {
         super.onResume()
         presenter.updateList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
     override fun showActionBar(title: Int) {

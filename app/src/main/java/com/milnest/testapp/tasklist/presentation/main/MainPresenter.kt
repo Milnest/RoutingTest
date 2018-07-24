@@ -38,24 +38,30 @@ class MainPresenter : MvpPresenter<MainView>(){
     var curPosDelete = -1
 
     var actionMode : ActionMode? = null
-    val linearLayoutManager = LinearLayoutManager(App.context)
-    val gridLayoutManager = GridLayoutManager(App.context, 2)
+    /*val linearLayoutManager = LinearLayoutManager(App.context)
+    val gridLayoutManager = GridLayoutManager(App.context, 2)*/
 
     var rep = App.appComponent.dbRep()
 
+    var recyclerView: RecyclerView? = null
+
     fun setAdapter(itemsView: RecyclerView) {
+        recyclerView = itemsView
         if (curAdapterType == LINEAR_TYPE) {
             itemsView.adapter = adapterGrid
-            itemsView.layoutManager = gridLayoutManager
+            itemsView.layoutManager = GridLayoutManager(App.context, 2)/*gridLayoutManager*/
             curAdapterType = GRID_TYPE
             viewState.setSplitIcon(R.drawable.ic_linear_split)
             adaptersUpdateData()
+//            detachLinearRecyclerManager(linearLayoutManager)
         }else{
             itemsView.adapter = adapter
-            itemsView.layoutManager = linearLayoutManager
+//            itemsView.layoutManager = linearLayoutManager
+            itemsView.layoutManager = LinearLayoutManager(App.context)
             curAdapterType = LINEAR_TYPE
             viewState.setSplitIcon(R.drawable.ic_tasks_column_split)
             adaptersUpdateData()
+//            detachGridRecyclerManager(gridLayoutManager)
         }
     }
 
@@ -160,6 +166,20 @@ class MainPresenter : MvpPresenter<MainView>(){
     fun searchChangeFocus() = View.OnFocusChangeListener { _: View, _: Boolean ->
         adaptersUpdateData()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        /*detachLinearRecyclerManager(linearLayoutManager)
+        detachGridRecyclerManager(gridLayoutManager)*/
+    }
+
+//    private fun detachLinearRecyclerManager(layoutManager: LinearLayoutManager) {
+//        recyclerView?.Recycler()?.let { linearLayoutManager.detachAndScrapAttachedViews(it) }
+//    }
+//
+//    private fun detachGridRecyclerManager(layoutManager: GridLayoutManager) {
+//        recyclerView?.Recycler()?.let { gridLayoutManager.detachAndScrapAttachedViews(it) }
+//    }
 
     val searchListener: SearchView.OnQueryTextListener
         get() = object : SearchView.OnQueryTextListener {
