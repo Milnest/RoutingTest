@@ -3,7 +3,16 @@ package com.milnest.testapp.tasklist.data.repository
 import com.milnest.testapp.tasklist.entities.Task
 
 class DemoRepository : IDataRepository {
+    override fun setIData(isDemo: Boolean) = Unit
+
+    override fun getIData(): IDataRepository = this
+
     val taskList: MutableList<Task> = ArrayList()
+
+    init {
+
+    }
+
     override fun getAllTasks(): MutableList<Task> {
         return taskList
     }

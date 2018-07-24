@@ -16,6 +16,10 @@ import com.milnest.testapp.tasklist.data.db.TaskDatabaseHelper
 class DBRepository : IDataRepository{
     private var db: SQLiteDatabase = TaskDatabaseHelper(App.context).writableDatabase
 
+    override fun setIData(isDemo: Boolean) = Unit
+
+    override fun getIData(): IDataRepository = this
+
     override fun getAllTasks(): MutableList<Task> {
         val cursor = db.query(TaskDatabaseHelper.TABLE, null,
                 null, null, null, null, null)

@@ -26,6 +26,7 @@ class MainPresenter : MvpPresenter<MainView>() {
             }
 
             override fun showSystemMessage(message: String, type: Int) {
+                //TODO: включить
                 //viewState.showMessage(message)
             }
 

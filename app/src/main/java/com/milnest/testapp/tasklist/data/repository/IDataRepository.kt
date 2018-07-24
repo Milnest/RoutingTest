@@ -3,6 +3,8 @@ package com.milnest.testapp.tasklist.data.repository
 import com.milnest.testapp.tasklist.entities.Task
 
 interface IDataRepository {
+    fun setIData(isDemo: Boolean)
+    fun getIData() : IDataRepository
 
     fun getAllTasks(): MutableList<Task>
 

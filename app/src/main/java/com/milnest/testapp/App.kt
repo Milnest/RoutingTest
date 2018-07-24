@@ -8,8 +8,6 @@ import com.milnest.testapp.others.AppComponent
 import com.milnest.testapp.others.AppModule
 import com.milnest.testapp.others.DaggerAppComponent
 import com.milnest.testapp.router.CustomRouter
-import dagger.android.support.DaggerApplication
-import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Cicerone
 
@@ -21,15 +19,8 @@ class App : Application() {
         super.onCreate()
         context = this
         cicerone = Cicerone.create(CustomRouter())
-        appComponent = DaggerAppComponent.builder().appModule(AppModule(getMySharPref())).build()
-    }
-
-    private fun getMySharPref(): Boolean {
         sharPref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        if(sharPref.contains(APP_PREFERENCES_IS_DEMO)) {
-            return sharPref.getBoolean(APP_PREFERENCES_IS_DEMO, false)
-        }
-        return false
+        appComponent = DaggerAppComponent.builder().appModule(AppModule()).build()
     }
 
     companion object {
@@ -50,8 +41,11 @@ class App : Application() {
             return cicerone!!.router
         }
 
-        fun newAppComponent(isDemo: Boolean){
-            appComponent = DaggerAppComponent.builder().appModule(AppModule(isDemo)).build()
+        fun isDemoRepository(): Boolean {
+            if(sharPref.contains(APP_PREFERENCES_IS_DEMO)) {
+                return sharPref.getBoolean(APP_PREFERENCES_IS_DEMO, false)
+            }
+            return false
         }
     }
 }
