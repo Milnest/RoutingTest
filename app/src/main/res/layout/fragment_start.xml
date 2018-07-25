@@ -12,27 +12,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="К диаграмме"/>
+        android:text="@string/to_diag"/>
 
     <Button
         android:id="@+id/button_to_view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="View Pager"/>
+        android:text="@string/to_view_pager"/>
 
     <Button
         android:id="@+id/button_to_task_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="Task List"/>
+        android:text="@string/to_task_list"/>
 
     <Button
         android:id="@+id/button_to_demo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="Want demo"/>
+        android:text="@string/change_repo"/>
+
+    <Button
+        android:id="@+id/button_to_content_provider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/to_content_provider"/>
 
 </LinearLayout>

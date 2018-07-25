@@ -1,5 +1,6 @@
 package com.milnest.testapp.presentation.start
 
+import android.content.Intent
 import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -30,6 +31,9 @@ class StartPresenter : MvpPresenter<StartView>() {
                             App.sharPref.edit().putBoolean(App.APP_PREFERENCES_IS_DEMO, true).apply()
                         }
                         App.appComponent.dbRep().setIData(App.isDemoRepository())
+                    }
+                    R.id.button_to_content_provider -> {
+                        viewState.startContentProviderActivity()
                     }
                 }
             }

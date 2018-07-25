@@ -31,7 +31,10 @@
     <string name="new_cam_photo">Сделать новое</string>
     <string name="gallery_photo">Взять из галереи</string>
     <string name="more_elements">. . .</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="to_diag">К диаграмме</string>
+    <string name="to_view_pager">View Pager</string>
+    <string name="to_task_list">Task List</string>
+    <string name="change_repo">Change repository</string>
+    <string name="to_content_provider">content provider</string>
 </resources>
