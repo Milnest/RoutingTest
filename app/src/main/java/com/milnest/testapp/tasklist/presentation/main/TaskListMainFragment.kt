@@ -49,7 +49,7 @@ class TaskListMainFragment : BaseFragment(), MainView {
         //setHasOptionsMenu(true)
         //setSupportActionBar(toolbar)
         presenter.attachView(this)
-        presenter.setAdapter(recyclerView)
+        presenter.setAdapter(recyclerView) //TODO: свап эту и следующую строку местами
         recyclerView.layoutManager = LinearLayoutManager(context!!)
 
         val dialogBuilder = AlertDialog.Builder(context!!) // TODO: изменено
