@@ -37,4 +37,7 @@
     <string name="to_task_list">Task List</string>
     <string name="change_repo">Change repository</string>
     <string name="to_content_provider">content provider</string>
+    <string name="no_email_value">Не задан</string>
+    <string name="drawer_open">Открыть</string>
+    <string name="drawer_close">Закрыть</string>
 </resources>

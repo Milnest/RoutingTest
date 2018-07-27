@@ -4,9 +4,10 @@ import android.provider.ContactsContract
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
+import com.milnest.testapp.R
+import com.milnest.testapp.entities.ContactLongInfo
 import com.milnest.testapp.entities.ContactShortInfo
 import com.milnest.testapp.tasklist.presentation.main.IClickListener
-import java.text.FieldPosition
 
 @InjectViewState
 class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
@@ -20,7 +21,12 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     val PhoneCONTENT_URI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
     val Phone_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID
     val NUMBER = ContactsContract.CommonDataKinds.Phone.NUMBER
-    val anything = ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+    val EMAIL_CONTENT_URI = ContactsContract.CommonDataKinds.Email.CONTENT_URI
+    val EMAIL_CONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID
+    val EMAIL = ContactsContract.CommonDataKinds.Email.ADDRESS
+    val WEBSITE_CONTACT_ID = ContactsContract.CommonDataKinds.Website.CONTACT_ID
+    val WEBSITE = ContactsContract.CommonDataKinds.Website.URL
+
 
     fun getContactsAdapter(): ContactsAdapter? {
         adapter = ContactsAdapter(contactClickListener)
@@ -31,16 +37,54 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     val contactClickListener
     get() = object : IClickListener {
         override fun onItemClick(position: Int) {
-            val cursor = contentResolver.query(CONTENT_URI, null,_ID + " = ?", arrayOf(adapter?.getItemId(position).toString()), null)
-            if (cursor.moveToNext()) {
-                val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
-                name.toString()
-            }
+            val longInfo = getContactInfo(position)
+            val longInfoList: MutableList<String> = ArrayList()
+            longInfoList.add(longInfo.name)
+            longInfoList.add(longInfo.email)
+            longInfoList.addAll(longInfo.phone)
+            viewState.showContactInfo(longInfoList)
         }
 
         override fun onItemLongClick(position: Int): Boolean {
             return true
         }
+    }
+
+    private fun getContactInfo(position: Int) : ContactLongInfo {
+        val phonesList: MutableList<String> = ArrayList()
+        phonesList.add("")
+        val contactLongInfo = ContactLongInfo(-1, "", phonesList, "")
+        val cursor = contentResolver.query(CONTENT_URI, null,_ID + " = ?", arrayOf(adapter?.getItemId(position).toString()), null)
+        if (cursor.moveToNext()) {
+            /*val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
+            name.toString()*/
+            contactLongInfo.id = cursor.getLong(cursor.getColumnIndex(_ID))
+            val contact_id = contactLongInfo.id.toString()/*cursor.getString(cursor.getColumnIndex(_ID))*/
+            val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
+            val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
+            if (hasPhoneNumber > 0) {
+                contactLongInfo.name = name
+                val phoneCursor = contentResolver.query(PhoneCONTENT_URI, null,
+                        Phone_CONTACT_ID + " = ?", arrayOf(contact_id), null)
+                val phonesArray = arrayOf("")
+                while (phoneCursor.moveToNext()) {
+                    contactLongInfo.phone.add(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)))
+                }
+                phoneCursor.close()
+            }
+            //cursor.getString(cursor.getColumnIndex(EMAIL))
+            val emailCursor = contentResolver.query(EMAIL_CONTENT_URI, null,
+                    EMAIL_CONTACT_ID + " = ?", arrayOf(contact_id), null)
+            if(emailCursor.moveToNext()){
+                contactLongInfo.email = emailCursor.getString(emailCursor.getColumnIndex(EMAIL))
+            }
+            else{
+                contactLongInfo.email = App.context.getString(R.string.no_email_value)
+            }
+            emailCursor.close()
+            cursor.close()
+        }
+        return contactLongInfo
     }
 
     private fun getContactsList() : MutableList<ContactShortInfo>{
@@ -59,6 +103,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 while (phoneCursor.moveToNext()) {
                     /*val phoneNumber*/ contactShortInfo.phone = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER))
                 }
+                phoneCursor.close()
             }
             if (contactShortInfo.name != "" || contactShortInfo.phone != "")
             contactsList.add(contactShortInfo)
