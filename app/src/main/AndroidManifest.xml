@@ -24,7 +24,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.contentprovider.ContentProviderActivity"></activity>
+        <activity android:name=".presentation.contentprovider.ContentProviderActivity">
+
+            <intent-filter android:label="Pick Contact">
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/contact"/>
+                <data android:mimeType="vnd.android.cursor.dir/person"/>
+                <data android:mimeType="vnd.android.cursor.dir/phone"/>
+                <data android:mimeType="vnd.android.cursor.dir/phone_v2"/>
+                <data android:mimeType="vnd.android.cursor.dir/postal-address"/>
+                <data android:mimeType="vnd.android.cursor.dir/postal-address_v2"/>
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

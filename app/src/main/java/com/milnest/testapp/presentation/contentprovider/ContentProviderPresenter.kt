@@ -1,6 +1,10 @@
 package com.milnest.testapp.presentation.contentprovider
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.provider.ContactsContract
+import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
@@ -13,6 +17,7 @@ import com.milnest.testapp.tasklist.presentation.main.IClickListener
 class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     var adapter: ContactsAdapter? = null
 
+    var lastContactId: Long = -1
     val contentResolver = App.context.contentResolver
     val CONTENT_URI = ContactsContract.Contacts.CONTENT_URI
     val _ID = ContactsContract.Contacts._ID
@@ -39,6 +44,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
         override fun onItemClick(position: Int) {
             val longInfo = getContactInfo(position)
             val longInfoList: MutableList<String> = ArrayList()
+            /*longInfoList.add(longInfo.id.toString())*/
             longInfoList.add(longInfo.name)
             longInfoList.add(longInfo.email)
             longInfoList.addAll(longInfo.phone)
@@ -47,6 +53,15 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
 
         override fun onItemLongClick(position: Int): Boolean {
             return true
+        }
+    }
+
+    val acceptListener
+    get() = object : View.OnClickListener {
+        override fun onClick(view: View?) {
+            val contactRes = Intent(ContactsContract.Contacts.EXTRA_ADDRESS_BOOK_INDEX, Uri.parse("content://contacts/people/" + lastContactId))
+            viewState.setResult(Activity.RESULT_OK, contactRes)
+            viewState.finish()
         }
     }
 
@@ -59,6 +74,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             /*val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
             name.toString()*/
             contactLongInfo.id = cursor.getLong(cursor.getColumnIndex(_ID))
+            lastContactId = contactLongInfo.id
             val contact_id = contactLongInfo.id.toString()/*cursor.getString(cursor.getColumnIndex(_ID))*/
             val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
             val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
@@ -66,7 +82,6 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 contactLongInfo.name = name
                 val phoneCursor = contentResolver.query(PhoneCONTENT_URI, null,
                         Phone_CONTACT_ID + " = ?", arrayOf(contact_id), null)
-                val phonesArray = arrayOf("")
                 while (phoneCursor.moveToNext()) {
                     contactLongInfo.phone.add(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)))
                 }

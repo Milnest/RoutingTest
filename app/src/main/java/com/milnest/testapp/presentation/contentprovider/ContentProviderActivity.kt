@@ -1,9 +1,14 @@
 package com.milnest.testapp.presentation.contentprovider
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
+import android.view.View
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.App
@@ -20,32 +25,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_content_provider)
-        bar = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
-        drawer_layout.addDrawerListener(bar)
-        bar.syncState()
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        /*val cursor = contentResolver.query(CONTENT_URI, null,null, null, null)
-        while (cursor.moveToNext()){
-            val contact_id = cursor.getString(cursor.getColumnIndex(_ID))
-            val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
-            val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
-
-            //Получаем имя:
-            if (hasPhoneNumber > 0) {
-                contact_info_text_view.text = name
-                *//*output.append("\n Имя: " + name)*//*
-                val phoneCursor = contentResolver.query(PhoneCONTENT_URI, null,
-                Phone_CONTACT_ID + " = ?", arrayOf(contact_id), null)
-
-                //и его номер
-                while (phoneCursor.moveToNext()) {
-                    val phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER))
-                    contact_info_text_view.text = contact_info_text_view.text.toString() + phoneNumber
-                    *//*output.append("\n Телефон: " + phoneNumber)*//*
-                }
-            }
-        }*/
+        bindViews()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -59,6 +39,19 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
     }
 
     private fun bindViews() {
+        setUpDrawerBar()
+        button_contact_accept.setOnClickListener(presenter.acceptListener)
+    }
+
+    fun setUpDrawerBar(){
+        bar = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
+        drawer_layout.addDrawerListener(bar)
+        bar.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
         fillRecycler()
     }
 
@@ -66,12 +59,6 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         recyclerViewContactsShort.adapter = presenter.getContactsAdapter()
         recyclerViewContactsShort.layoutManager = LinearLayoutManager(App.context)
     }
-
-    override fun onStart() {
-        super.onStart()
-        bindViews()
-    }
-
     override fun showContactInfo(contactInfo: MutableList<String>) {
         /*contactInfoNameTextView.text = contactInfo.name
         contactInfoPhoneTextView.text = contactInfo.phone
@@ -81,6 +68,9 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         recyclerViewContactInfo.adapter = adapter
         recyclerViewContactInfo.layoutManager = LinearLayoutManager(App.context)
         drawer_layout.closeDrawers()
+        if(intent.action == Intent.ACTION_PICK){
+            button_contact_accept.visibility = View.VISIBLE
+        }
     }
 
 }

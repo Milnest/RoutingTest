@@ -40,4 +40,5 @@
     <string name="no_email_value">Не задан</string>
     <string name="drawer_open">Открыть</string>
     <string name="drawer_close">Закрыть</string>
+    <string name="choice_accept">Подтвердить выбор</string>
 </resources>

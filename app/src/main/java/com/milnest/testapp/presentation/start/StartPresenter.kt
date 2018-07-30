@@ -35,6 +35,9 @@ class StartPresenter : MvpPresenter<StartView>() {
                     R.id.button_to_content_provider -> {
                         viewState.startContentProviderActivity()
                     }
+                    R.id.button_start_contacts_list -> {
+                        viewState.startContactActivity()
+                    }
                 }
             }
         }

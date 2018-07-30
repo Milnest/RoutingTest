@@ -5,4 +5,5 @@ import com.arellomobile.mvp.MvpView
 
 interface StartView : MvpView {
     fun startContentProviderActivity()
+    fun startContactActivity()
 }
