@@ -7,15 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.ToggleButton
 import com.milnest.testapp.R
-import com.milnest.testapp.entities.ContactShortInfo
+import com.milnest.testapp.entities.EventShortInfo
 import com.milnest.testapp.tasklist.presentation.main.IClickListener
 
-class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var contactsList: MutableList<ContactShortInfo> = ArrayList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class EventsAdapter(val iClickListener: IClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var eventsList: MutableList<EventShortInfo> = ArrayList()
 
     var selectedPosition = -1
     /*fun fillContactList(list: MutableList<ContactShortInfo>){
@@ -27,30 +23,28 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
     }
 
     override fun getItemCount(): Int {
-        return contactsList.size
+        return eventsList.size
     }
 
     override fun getItemId(position: Int): Long {
-        return contactsList.get(position).id
+        return eventsList.get(position).id
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val contactHolder = holder as ShortContactItemHolder
-        contactHolder.nameTextView.text = contactsList[position].name
-        contactHolder.phoneTextView.text = contactsList[position].phone
+        contactHolder.titleTextView.text = eventsList[position].title
+        contactHolder.contentTextView.text = eventsList[position].content
         contactHolder.toggleButton.isChecked = selectedPosition == position
     }
 
     inner class ShortContactItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var nameTextView: TextView = itemView.findViewById(R.id.titleTextView)
-        internal var phoneTextView: TextView = itemView.findViewById(R.id.contentTextView)
+        internal var titleTextView : TextView = itemView.findViewById(R.id.titleTextView)
+        internal var contentTextView : TextView = itemView.findViewById(R.id.contentTextView)
         internal var toggleButton: ToggleButton = itemView.findViewById(R.id.toggle)
-
         init {
             toggleButton.setOnClickListener {
                 iClickListener.onItemClick(layoutPosition)
                 selectedPosition = adapterPosition
-                notifyDataSetChanged()
             }
             /*itemView.setOnClickListener {
                 iClickListener.onItemClick(layoutPosition)

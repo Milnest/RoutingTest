@@ -4,7 +4,8 @@ import android.content.Intent
 import com.arellomobile.mvp.MvpView
 
 interface ContentProviderView : MvpView {
-    fun showContactInfo(contactInfo: MutableList<String>)
+    fun showInfo(info: MutableList<String>)
     fun setResult(resultCode: Int, data: Intent)
     fun finish()
+    fun interactProgressBar(show: Boolean)
 }

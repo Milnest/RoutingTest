@@ -7,21 +7,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.milnest.testapp.R
 
-class ContactInfoAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class InfoAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    var contactInfoList : MutableList<String> = ArrayList()
+    var infoList : MutableList<String> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ContactInfoItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.contact_info_item, null, false))
     }
 
     override fun getItemCount(): Int {
-        return contactInfoList.size
+        return infoList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val contactHolder = holder as ContactInfoItemHolder
-        contactHolder.contactInfoItemTextView.text = contactInfoList[position]
+        contactHolder.contactInfoItemTextView.text = infoList[position]
     }
 
     inner class ContactInfoItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

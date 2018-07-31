@@ -1,14 +1,13 @@
 package com.milnest.testapp.presentation.contentprovider
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.App
@@ -24,8 +23,10 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(this.javaClass.simpleName, "***** fun onCreate")
         setContentView(R.layout.activity_content_provider)
         bindViews()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -40,7 +41,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     private fun bindViews() {
         setUpDrawerBar()
-        button_contact_accept.setOnClickListener(presenter.acceptListener)
+        button_accept.setOnClickListener(presenter.acceptListener)
     }
 
     fun setUpDrawerBar(){
@@ -52,25 +53,54 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        Log.d(this.javaClass.simpleName, "***** fun onStart")
         fillRecycler()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(this.javaClass.simpleName, "***** fun onResume")
     }
 
     fun fillRecycler(){
         recyclerViewContactsShort.adapter = presenter.getContactsAdapter()
         recyclerViewContactsShort.layoutManager = LinearLayoutManager(App.context)
+        recyclerViewEventsShort.adapter = presenter.getMyEventsAdapter()
+        recyclerViewEventsShort.layoutManager = LinearLayoutManager(App.context)
     }
-    override fun showContactInfo(contactInfo: MutableList<String>) {
-        /*contactInfoNameTextView.text = contactInfo.name
-        contactInfoPhoneTextView.text = contactInfo.phone
-        contactInfoEmailTextView.text = contactInfo.email*/
-        val adapter = ContactInfoAdapter()
-        adapter.contactInfoList = contactInfo
+    override fun showInfo(info: MutableList<String>) {
+        val adapter = InfoAdapter()
+        adapter.infoList = info
         recyclerViewContactInfo.adapter = adapter
         recyclerViewContactInfo.layoutManager = LinearLayoutManager(App.context)
         drawer_layout.closeDrawers()
         if(intent.action == Intent.ACTION_PICK){
-            button_contact_accept.visibility = View.VISIBLE
+            button_accept.visibility = View.VISIBLE
         }
+    }
+
+    override fun interactProgressBar(show: Boolean) {
+        if (show){
+            progressBar.visibility = ProgressBar.VISIBLE
+        }
+        else{
+            progressBar.visibility = ProgressBar.GONE
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(this.javaClass.simpleName, "***** fun onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(this.javaClass.simpleName, "***** fun onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(this.javaClass.simpleName, "***** fun onDestroy")
     }
 
 }

@@ -10,6 +10,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewContactInfo"
             android:layout_width="match_parent"
@@ -17,7 +23,7 @@
             android:layout_weight="0.9"/>
 
         <Button
-            android:id="@+id/button_contact_accept"
+            android:id="@+id/button_accept"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
@@ -50,7 +56,14 @@
         android:id="@+id/nav_view_left"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start" />
+        android:layout_gravity="start" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewEventsShort"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.design.widget.NavigationView>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view_right"
