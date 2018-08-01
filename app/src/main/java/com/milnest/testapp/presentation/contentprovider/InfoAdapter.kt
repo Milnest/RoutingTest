@@ -12,7 +12,7 @@ class InfoAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var infoList : MutableList<String> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ContactInfoItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.contact_info_item, null, false))
+        return ContactInfoItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_contact_info_item, null, false))
     }
 
     override fun getItemCount(): Int {

@@ -55,6 +55,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         super.onStart()
         Log.d(this.javaClass.simpleName, "***** fun onStart")
         fillRecycler()
+        presenter.onStart()
     }
 
     override fun onResume() {
@@ -94,6 +95,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
     }
 
     override fun onStop() {
+        presenter.onStop()
         super.onStop()
         Log.d(this.javaClass.simpleName, "***** fun onStop")
     }

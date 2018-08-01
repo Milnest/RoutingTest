@@ -13,6 +13,7 @@ import com.milnest.testapp.R
 import com.milnest.testapp.entities.ContactLongInfo
 import com.milnest.testapp.entities.ContactShortInfo
 import com.milnest.testapp.entities.EventShortInfo
+import com.milnest.testapp.entities.eventbus.LoaderShowEvent
 import com.milnest.testapp.tasklist.presentation.main.IClickListener
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -20,6 +21,9 @@ import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiConsumer
 import io.reactivex.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @InjectViewState
 class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
@@ -69,8 +73,8 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
         }
 
     fun getContactsAdapter(): ContactsAdapter? {
-        viewState.interactProgressBar(true)
-
+        //viewState.interactProgressBar(true)
+        EventBus.getDefault().post(LoaderShowEvent(true))
         Single.create<MutableList<ContactShortInfo>> {
             it.onSuccess(getContactsList())
         }
@@ -79,7 +83,8 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 .subscribe { list, throwable ->
                     if (throwable == null)
                         adapter?.contactsList = list
-                    viewState.interactProgressBar(false)
+                    /*viewState.interactProgressBar(false)*/
+                    EventBus.getDefault().post(LoaderShowEvent(false))
                 }
         return adapter
     }
@@ -116,11 +121,9 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
         val contactLongInfo = ContactLongInfo(-1, "", phonesList, "")
         val cursor = contentResolver.query(CONTENT_URI, null, _ID + " = ?", arrayOf(adapter?.getItemId(position).toString()), null)
         if (cursor.moveToNext()) {
-            /*val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
-            name.toString()*/
             contactLongInfo.id = cursor.getLong(cursor.getColumnIndex(_ID))
             lastContactId = contactLongInfo.id
-            val contact_id = contactLongInfo.id.toString()/*cursor.getString(cursor.getColumnIndex(_ID))*/
+            val contact_id = contactLongInfo.id.toString()
             val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
             val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
             if (hasPhoneNumber > 0) {
@@ -132,7 +135,6 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 }
                 phoneCursor.close()
             }
-            //cursor.getString(cursor.getColumnIndex(EMAIL))
             val emailCursor = contentResolver.query(EMAIL_CONTENT_URI, null,
                     EMAIL_CONTACT_ID + " = ?", arrayOf(contact_id), null)
             if (emailCursor.moveToNext()) {
@@ -160,7 +162,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 val phoneCursor = contentResolver.query(PhoneCONTENT_URI, null,
                         Phone_CONTACT_ID + " = ?", arrayOf(contact_id), null)
                 while (phoneCursor.moveToNext()) {
-                    /*val phoneNumber*/ contactShortInfo.phone = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER))
+                    contactShortInfo.phone = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER))
                 }
                 phoneCursor.close()
             }
@@ -203,5 +205,19 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
         }
         cursor.close()
         return eventInfo
+    }
+
+    fun onStop() {
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+    }
+
+    fun onStart() {
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoaderShowEvent(event: LoaderShowEvent) {
+        viewState.interactProgressBar(event.progressBarState)
     }
 }

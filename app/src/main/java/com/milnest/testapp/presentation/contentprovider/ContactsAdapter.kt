@@ -23,7 +23,7 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
     }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ShortContactItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.short_item_info, null, false))
+        return ShortContactItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_short_item_info, null, false))
     }
 
     override fun getItemCount(): Int {

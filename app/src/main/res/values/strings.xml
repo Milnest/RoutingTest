@@ -41,4 +41,5 @@
     <string name="drawer_open">Открыть</string>
     <string name="drawer_close">Закрыть</string>
     <string name="choice_accept">Подтвердить выбор</string>
+    <string name="contact_img">contact_img</string>
 </resources>

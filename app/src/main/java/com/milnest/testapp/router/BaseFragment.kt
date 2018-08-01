@@ -1,18 +1,11 @@
 package com.milnest.testapp.router
 
-import android.content.Context
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.util.Log
-import com.arellomobile.mvp.MvpAppCompatFragment
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.support.v4.content.ContextCompat.getSystemService
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.app.Activity
-import android.support.v4.content.ContextCompat.getSystemService
+import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.arellomobile.mvp.MvpAppCompatFragment
 
 
 abstract class BaseFragment : MvpAppCompatFragment() {
