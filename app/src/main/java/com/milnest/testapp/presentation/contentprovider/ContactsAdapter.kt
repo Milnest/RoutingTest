@@ -1,17 +1,17 @@
 package com.milnest.testapp.presentation.contentprovider
 
 import android.net.Uri
-import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.ToggleButton
 import com.milnest.testapp.App
 import com.milnest.testapp.R
 import com.milnest.testapp.customview.ContactPhotoHolder
+import com.milnest.testapp.customview.RoundedTransformation
+import com.milnest.testapp.customview.RoundedTransformationChecked
 import com.milnest.testapp.entities.ContactShortInfo
 import com.milnest.testapp.tasklist.presentation.main.IClickListener
 import com.squareup.picasso.Picasso
@@ -53,8 +53,7 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
                 if (selectedPosition != position)
                     Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).resize(100,100).into(contactHolder.photoImage)
                 else {
-                    /*contactHolder.cardView.(App.context.resources.getColor(R.color.colorBlueGray_500))*/
-                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).resize(100,100).into(contactHolder.photoImage)
+                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).transform(RoundedTransformationChecked(50,0)).resize(100,100).into(contactHolder.photoImage)
                 }
             }
             else -> {
@@ -91,7 +90,7 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
     }
 
     inner class ShortContactWithPhotoHolder(itemView: View) : ShortContactItemHolder(itemView) {
-        internal var cardView: CardView = itemView.findViewById(R.id.cardViewShortPhoto)
+        /*internal var cardView: CardView = itemView.findViewById(R.id.cardViewShortPhoto)*/
         internal var photoImage: ImageView = itemView.findViewById(R.id.contactShortPhotoImg)
 
         init {
