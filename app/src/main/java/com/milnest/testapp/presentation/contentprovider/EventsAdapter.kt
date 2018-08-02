@@ -14,12 +14,9 @@ class EventsAdapter(val iClickListener: IClickListener): RecyclerView.Adapter<Re
     var eventsList: MutableList<EventShortInfo> = ArrayList()
 
     var selectedPosition = -1
-    /*fun fillContactList(list: MutableList<ContactShortInfo>){
-        eventsList = list
-    }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ShortContactItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_short_item_info, null, false))
+        return ShortContactItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_event_item, null, false))
     }
 
     override fun getItemCount(): Int {
@@ -38,18 +35,14 @@ class EventsAdapter(val iClickListener: IClickListener): RecyclerView.Adapter<Re
     }
 
     inner class ShortContactItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var titleTextView : TextView = itemView.findViewById(R.id.titleTextView)
-        internal var contentTextView : TextView = itemView.findViewById(R.id.contentTextView)
+        internal var titleTextView : TextView = itemView.findViewById(R.id.eventTitleTextView)
+        internal var contentTextView : TextView = itemView.findViewById(R.id.eventContentTextView)
         internal var toggleButton: ToggleButton = itemView.findViewById(R.id.toggle)
         init {
             toggleButton.setOnClickListener {
                 iClickListener.onItemClick(layoutPosition)
                 selectedPosition = adapterPosition
             }
-            /*itemView.setOnClickListener {
-                iClickListener.onItemClick(layoutPosition)
-                selectedPosition = adapterPosition
-            }*/
         }
     }
 }

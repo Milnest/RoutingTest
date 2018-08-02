@@ -12,6 +12,7 @@ import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.App
 import com.milnest.testapp.R
+import com.milnest.testapp.entities.InfoItem
 import kotlinx.android.synthetic.main.activity_content_provider.*
 
 
@@ -69,7 +70,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         recyclerViewEventsShort.adapter = presenter.getMyEventsAdapter()
         recyclerViewEventsShort.layoutManager = LinearLayoutManager(App.context)
     }
-    override fun showInfo(info: MutableList<String>) {
+    override fun showInfo(info: MutableList<InfoItem>) {
         val adapter = InfoAdapter()
         adapter.infoList = info
         recyclerViewContactInfo.adapter = adapter

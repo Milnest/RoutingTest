@@ -1,36 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
--->
-
-<!--<ToggleButton
-    android:id="@+id/toggle"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/contact_selector"
-    android:checked="true"
-    android:text=""
-    android:textOff=""
-    android:textOn="" />-->
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.milnest.testapp.customview.ContactPhotoHolder
-        android:id="@+id/contactPhotoHolderShortInfo"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        app:cph_background_color="@color/colorGray_100"
-        app:cph_radius="25dp"
-        app:cph_text="DA"
-        app:cph_text_color="@color/colorBlack"
-        app:cph_text_size="50sp" />
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardViewShortPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="25dp"
+        card_view:cardElevation="0dp"
+        card_view:cardBackgroundColor="@android:color/transparent" >
+        <ImageView
+            android:id="@+id/contactShortPhotoImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/contact_img" />
+
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,5 +46,4 @@
             android:textSize="15sp" />
 
     </LinearLayout>
-</LinearLayout><!--
-</FrameLayout>-->
+</LinearLayout>
