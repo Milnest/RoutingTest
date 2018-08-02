@@ -51,7 +51,7 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
             ContactShortInfo.SHORT_INFO_PHOTO -> {
                 contactHolder = contactHolder as ShortContactWithPhotoHolder
                 if (selectedPosition != position)
-                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).resize(100,100).into(contactHolder.photoImage)
+                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).transform(RoundedTransformation(50,0)).resize(100,100).into(contactHolder.photoImage)
                 else {
                     Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).transform(RoundedTransformationChecked(50,0)).resize(100,100).into(contactHolder.photoImage)
                 }

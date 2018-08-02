@@ -36,6 +36,6 @@ class RoundedTransformationChecked// radius is corner radii in dp
     }
 
     override fun key(): String {
-        return "rounded"
+        return "rounded_checked"
     }
 }
