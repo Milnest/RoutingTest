@@ -25,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.contentprovider.ContentProviderActivity">
+        <activity android:name=".presentation.contentprovider.ContentProviderActivity"
+            android:hardwareAccelerated="false">
 
             <intent-filter android:label="Pick Contact">
                 <action android:name="android.intent.action.PICK" />

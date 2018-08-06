@@ -170,6 +170,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
 
     private fun getContactsList(): MutableList<ContactShortInfo> {
         val contactsList: MutableList<ContactShortInfo> = ArrayList()
+        var lastLiteral = ""
         val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
         while (cursor.moveToNext()) {
             val contactShortInfo = ContactShortInfo(-1, "", "", "",
@@ -177,6 +178,14 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             contactShortInfo.id = cursor.getLong(cursor.getColumnIndex(_ID))
             val contact_id = contactShortInfo.id.toString()/*cursor.getString(cursor.getColumnIndex(_ID))*/
             val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
+            /****************/
+            val tempLiteral = getPlaceHolderLiteral(name)
+            if (lastLiteral != tempLiteral){
+                contactsList.add(ContactShortInfo(-1, tempLiteral, "", "",
+                        ContactShortInfo.SHORT_INFO_GROUP))
+                lastLiteral = tempLiteral
+            }
+            /***************/
             val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
             if (hasPhoneNumber > 0) {
                 contactShortInfo.name = name

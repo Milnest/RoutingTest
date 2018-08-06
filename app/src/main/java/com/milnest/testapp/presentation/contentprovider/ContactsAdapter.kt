@@ -27,9 +27,13 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-        /*TODO: сделать холдер*/ContactShortInfo.SHORT_INFO_PHOTO -> ShortContactWithPhotoHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_short_item_info_photo, parent, false))
-            else -> ShortContactWithoutPhotoHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_short_item_info, parent, false
-            ))
+            ContactShortInfo.SHORT_INFO_PHOTO -> ShortContactWithPhotoHolder(LayoutInflater.from(parent.context).inflate(
+                    R.layout.activity_content_provider_short_item_info_photo, parent, false))
+            ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER -> ShortContactWithoutPhotoHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                            R.layout.activity_content_provider_short_item_info, parent, false))
+            else -> GroupItemHolder(LayoutInflater.from(parent.context).inflate(
+                    R.layout.activity_content_provider_group_item, parent, false))
         }
     }
 
@@ -43,26 +47,35 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val type = contactsList[position].type
-        var contactHolder = holder as ShortContactItemHolder
-        contactHolder.nameTextView.text = contactsList[position].name
-        contactHolder.phoneTextView.text = contactsList[position].phone
+        var contactHolder = holder
         /*contactHolder.toggleButton.isChecked = selectedPosition == position*/
         when (type) {
             ContactShortInfo.SHORT_INFO_PHOTO -> {
                 contactHolder = contactHolder as ShortContactWithPhotoHolder
                 if (selectedPosition != position)
-                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).transform(RoundedTransformation(50,0)).resize(100,100).into(contactHolder.photoImage)
+                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).transform(RoundedTransformation(50, 0)).resize(100, 100).into(contactHolder.photoImage)
                 else {
-                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).transform(RoundedTransformationChecked(50,0)).resize(100,100).into(contactHolder.photoImage)
+                    Picasso.get().load(Uri.parse(contactsList[position].photoUriString)).transform(RoundedTransformationChecked(50, 0)).resize(100, 100).into(contactHolder.photoImage)
                 }
+                contactHolder.nameTextView.text = contactsList[position].name
+                contactHolder.phoneTextView.text = contactsList[position].phone
             }
-            else -> {
+            ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER -> {
                 contactHolder = contactHolder as ShortContactWithoutPhotoHolder
                 if (selectedPosition != position)
                     (contactHolder).photoHolder.text = contactsList[position].photoUriString
                 else {
                     (contactHolder).photoHolder.text = "V"
                     contactHolder.photoHolder.color = App.context.resources.getColor(R.color.colorBlueGray_500)
+                }
+                contactHolder.nameTextView.text = contactsList[position].name
+                contactHolder.phoneTextView.text = contactsList[position].phone
+            }
+            else -> {
+                val groupHolder = holder as GroupItemHolder
+                if (position != contactsList.lastIndex){
+                    if(contactsList[position + 1].type != ContactShortInfo.SHORT_INFO_GROUP)
+                        groupHolder.groupTitleTextView.text = contactsList[position].name
                 }
             }
         }
@@ -71,22 +84,18 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
     override fun getItemViewType(position: Int): Int {
         return when (contactsList[position].type) {
             ContactShortInfo.SHORT_INFO_PHOTO -> ContactShortInfo.SHORT_INFO_PHOTO
-            else -> ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER
+            ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER -> ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER
+            else -> ContactShortInfo.SHORT_INFO_GROUP
         }
     }
 
     open inner class ShortContactItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var nameTextView: TextView = itemView.findViewById(R.id.titleTextView)
         internal var phoneTextView: TextView = itemView.findViewById(R.id.contentTextView)
-        /*internal var toggleButton: ToggleButton = itemView.findViewById(R.id.toggle)*/
+    }
 
-        /*init {
-            toggleButton.setOnClickListener {
-                iClickListener.onItemClick(layoutPosition)
-                selectedPosition = adapterPosition
-                notifyDataSetChanged()
-            }
-        }*/
+    inner class GroupItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal var groupTitleTextView: TextView = itemView.findViewById(R.id.groupTitleTextView)
     }
 
     inner class ShortContactWithPhotoHolder(itemView: View) : ShortContactItemHolder(itemView) {

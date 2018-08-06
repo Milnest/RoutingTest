@@ -14,6 +14,7 @@ class RoundedTransformationChecked// radius is corner radii in dp
         val paint = Paint()
         paint.setAntiAlias(true)
         paint.setShader(BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP))
+        paint.maskFilter = BlurMaskFilter(40f, BlurMaskFilter.Blur.INNER)
         val output = Bitmap.createBitmap(source.width, source.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(output)
         canvas.drawRoundRect(RectF(margin.toFloat(), margin.toFloat(), (source.width - margin).toFloat(), (source.height - margin).toFloat()), radius.toFloat(), radius.toFloat(), paint)

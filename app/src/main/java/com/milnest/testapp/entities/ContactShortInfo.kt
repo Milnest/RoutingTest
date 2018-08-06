@@ -4,5 +4,6 @@ data class ContactShortInfo(var id: Long, var name: String, var phone: String, v
     companion object {
         const val SHORT_INFO_PHOTO = 0
         const val SHORT_INFO_PHOTO_PLACEHOLDER = 1
+        const val SHORT_INFO_GROUP = 2
     }
 }

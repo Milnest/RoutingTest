@@ -3,10 +3,12 @@ package com.milnest.testapp.customview
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
+import com.milnest.testapp.App
 import com.milnest.testapp.R
 
 class ContactPhotoHolder(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
@@ -15,7 +17,7 @@ class ContactPhotoHolder(context: Context?, attrs: AttributeSet?) : View(context
     var textSize = atrArray.getDimensionPixelSize(R.styleable.ContactPhotoHolder_cph_text_size, 20)
     var text = atrArray.getString(R.styleable.ContactPhotoHolder_cph_text)
     var radius = atrArray.getDimension(R.styleable.ContactPhotoHolder_cph_radius, 0f)
-    var color = atrArray.getColor(R.styleable.ContactPhotoHolder_cph_background_color, resources.getColor(R.color.colorGray_100))
+    var color = atrArray.getColor(R.styleable.ContactPhotoHolder_cph_background_color, resources.getColor(R.color.colorBlueGray_500))
     var myHeight = height
     var myWidth = width
     var centerX = width/2
