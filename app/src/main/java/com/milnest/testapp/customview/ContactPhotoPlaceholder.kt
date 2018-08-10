@@ -20,10 +20,12 @@ class ContactPhotoPlaceholder(context: Context?, attrs: AttributeSet?) : View(co
     var color = atrArray.getColor(R.styleable.ContactPhotoPlaceholder_cph_background_color, resources.getColor(R.color.colorBlueGray_500))
     var myHeight = height
     var myWidth = width
-    var centerX = width/2
-    var centerY = height/2
+    var centerX = width / 2
+    var centerY = height / 2
     var size: Int = myHeight
     val textBounds = Rect()
+    val textBoundsFirst = Rect()
+    val textBoundsSecond = Rect()
     val paint = Paint()
     val textPaint: Paint
         get() {
@@ -35,18 +37,27 @@ class ContactPhotoPlaceholder(context: Context?, attrs: AttributeSet?) : View(co
             textPaint.style = Paint.Style.STROKE
             return textPaint
         }
+    val textPaintSecond: Paint
+        get() {
+            val textPaint = Paint()
+            textPaint.isAntiAlias = true
+            textPaint.color = App.context.resources.getColor(R.color.red_a400)
+            textPaint.textSize = textSize.toFloat()/*35.0f*/
+            textPaint.strokeWidth = 2.0f
+            textPaint.style = Paint.Style.FILL_AND_STROKE
+            return textPaint
+        }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         myHeight = View.MeasureSpec.getSize(heightMeasureSpec)
         myWidth = View.MeasureSpec.getSize(widthMeasureSpec)
-        centerX = myWidth/2
-        centerY = myHeight/2
-        if (myWidth < myHeight){
+        centerX = myWidth / 2
+        centerY = myHeight / 2
+        if (myWidth < myHeight) {
             size = myWidth
             if (radius > myWidth) radius = myWidth.toFloat()
-        }
-        else{
+        } else {
             size = myHeight
             if (radius > myHeight) radius = myHeight.toFloat()
         }
@@ -59,12 +70,15 @@ class ContactPhotoPlaceholder(context: Context?, attrs: AttributeSet?) : View(co
         paint.color = color
         canvas.drawCircle(centerX.toFloat(), centerY.toFloat(), radius, paint)
         textPaint.getTextBounds(text, 0, text.length, textBounds)
-/*
-        canvas.drawText(text, centerX.toFloat() - textPaint.measureText(text)/2, centerY.toFloat() + textBounds.height()/2, textPaint)
-*/
-        if(textBounds.height() <= size && textBounds.width() <= size)
-            canvas.drawText(text, centerX.toFloat() - textPaint.measureText(text)/2, centerY.toFloat() + textBounds.height()/2, textPaint)
-        else
+        textPaint.getTextBounds(text.take(1), 0, text.take(1).length, textBoundsFirst)
+        if (textBounds.height() <= size && textBounds.width() <= size) {
+            val x_interval = centerX.toFloat() - textPaint.measureText(text) / 2
+            canvas.drawText(text.take(1), x_interval, centerY.toFloat() + textBounds.height() / 2, textPaint)
+            if (text.length > 1) {
+                textPaintSecond.getTextBounds(text.get(1).toString(), 0, text.get(1).toString().length, textBoundsSecond)
+                canvas.drawText(text.get(1).toString(), x_interval + textPaint.measureText(text.take(1)), centerY.toFloat() + textBounds.height() / 2, textPaintSecond)
+            }
+        } else
             textPaint.textSize = 10f
     }
 }
