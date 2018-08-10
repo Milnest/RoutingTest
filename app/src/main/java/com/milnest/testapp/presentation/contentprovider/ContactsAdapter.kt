@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.milnest.testapp.App
 import com.milnest.testapp.R
-import com.milnest.testapp.customview.ContactPhotoHolder
+import com.milnest.testapp.customview.ContactPhotoPlaceholder
 import com.milnest.testapp.customview.RoundedTransformation
 import com.milnest.testapp.customview.RoundedTransformationChecked
 import com.milnest.testapp.entities.ContactShortInfo
@@ -63,10 +63,10 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
             ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER -> {
                 contactHolder = contactHolder as ShortContactWithoutPhotoHolder
                 if (selectedPosition != position)
-                    (contactHolder).photoHolder.text = contactsList[position].photoUriString
+                    (contactHolder).photoPlaceholder.text = contactsList[position].photoUriString
                 else {
-                    (contactHolder).photoHolder.text = "V"
-                    contactHolder.photoHolder.color = App.context.resources.getColor(R.color.colorBlueGray_500)
+                    (contactHolder).photoPlaceholder.text = "V"
+                    contactHolder.photoPlaceholder.color = App.context.resources.getColor(R.color.colorBlueGray_500)
                 }
                 contactHolder.nameTextView.text = contactsList[position].name
                 contactHolder.phoneTextView.text = contactsList[position].phone
@@ -82,11 +82,7 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (contactsList[position].type) {
-            ContactShortInfo.SHORT_INFO_PHOTO -> ContactShortInfo.SHORT_INFO_PHOTO
-            ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER -> ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER
-            else -> ContactShortInfo.SHORT_INFO_GROUP
-        }
+        return contactsList[position].type
     }
 
     open inner class ShortContactItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -112,7 +108,7 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
     }
 
     inner class ShortContactWithoutPhotoHolder(itemView: View) : ShortContactItemHolder(itemView) {
-        internal var photoHolder: ContactPhotoHolder = itemView.findViewById(R.id.contactPhotoHolderShortInfo)
+        internal var photoPlaceholder: ContactPhotoPlaceholder = itemView.findViewById(R.id.contactPhotoPlaceholder)
 
         init {
             itemView.setOnClickListener {

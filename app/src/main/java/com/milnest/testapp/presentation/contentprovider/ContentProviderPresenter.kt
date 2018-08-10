@@ -5,23 +5,17 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.CalendarContract
 import android.provider.ContactsContract
-import android.util.Log
 import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
 import com.milnest.testapp.R
-import com.milnest.testapp.entities.ContactLongInfo
-import com.milnest.testapp.entities.ContactShortInfo
-import com.milnest.testapp.entities.EventShortInfo
-import com.milnest.testapp.entities.InfoItem
-import com.milnest.testapp.entities.eventbus.LoaderShowEvent
+import com.milnest.testapp.entities.*
+import com.milnest.testapp.others.eventbus.LoaderShowEvent
+import com.milnest.testapp.others.utils.RegexPicker
 import com.milnest.testapp.tasklist.presentation.main.IClickListener
 import io.reactivex.Single
-import io.reactivex.SingleObserver
-import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiConsumer
 import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -65,10 +59,11 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
         get() = object : IClickListener {
             override fun onItemClick(position: Int) {
                 val info = getEventInfo(position)
-                val infoList: MutableList<InfoItem> = ArrayList()
+                //TODO: сделать что-то
+                /*val infoList: MutableList<String> = ArrayList()
                 infoList.add(InfoItem(info.title, InfoItem.INFO_TYPE_TEXT))
                 infoList.add(InfoItem(info.content, InfoItem.INFO_TYPE_TEXT))
-                viewState.showInfo(infoList)
+                viewState.showInfo(infoList)*/
             }
 
             override fun onItemLongClick(position: Int): Boolean {
@@ -97,16 +92,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
         get() = object : IClickListener {
             override fun onItemClick(position: Int) {
                 val longInfo = getContactInfo(position)
-                val longInfoList: MutableList<InfoItem> = ArrayList()
-                longInfoList.add(InfoItem(longInfo.name, InfoItem.INFO_TYPE_TEXT))
-                longInfoList.add(InfoItem(longInfo.email, InfoItem.INFO_TYPE_TEXT))
-                for (item in longInfo.phone) {
-                    longInfoList.add(InfoItem(item, InfoItem.INFO_TYPE_TEXT))
-                }
-//                longInfoList.addAll(longInfo.phone)
-                longInfoList.add(longInfo.photo)
-                viewState.showInfo(longInfoList)
-                //adapter?.notifyDataSetChanged()
+                viewState.showInfo(longInfo)
             }
 
             override fun onItemLongClick(position: Int): Boolean {
@@ -123,37 +109,46 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             }
         }
 
+    val phoneListener
+        get() = object : InfoAdapter.PhoneClickListener {
+            override fun onItemClick(phoneNumber: String) {
+                val callIntent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+                viewState.startActivity(callIntent)
+            }
+        }
+
     private fun getContactInfo(position: Int): ContactLongInfo {
-        val phonesList: MutableList<String> = ArrayList()
-        phonesList.add("")
-        val contactLongInfo = ContactLongInfo(-1, "", phonesList, "", InfoItem("", InfoItem.INFO_TYPE_PHOTO_TEXT))
+        val infoList: MutableList<Info> = ArrayList()
+        /*phonesList.add("")*/
+        val contactLongInfo = ContactLongInfo(-1, infoList, Info(Info.TYPE_CONTACT_PHOTO_HOLDER, ""))
         val cursor = contentResolver.query(CONTENT_URI, null, _ID + " = ?", arrayOf(adapter?.getItemId(position).toString()), null)
         if (cursor.moveToNext()) {
             contactLongInfo.id = cursor.getLong(cursor.getColumnIndex(_ID))
             lastContactId = contactLongInfo.id
             val contact_id = contactLongInfo.id.toString()
             val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
+            contactLongInfo.info.add(Info(Info.TYPE_CONTACT_NAME, name))
             //*******//
             val photo = cursor.getString(cursor.getColumnIndex(CONTACT_PHOTO))
-            if (photo != null) contactLongInfo.photo = InfoItem(photo, InfoItem.INFO_TYPE_PHOTO)
-            else contactLongInfo.photo = InfoItem(getPlaceHolderLiteral(name), InfoItem.INFO_TYPE_PHOTO_TEXT)
+            if (photo != null) contactLongInfo.photo = Info(Info.TYPE_CONTACT_PHOTO, photo)
             //*******//
             val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
             if (hasPhoneNumber > 0) {
-                contactLongInfo.name = name
                 val phoneCursor = contentResolver.query(PhoneCONTENT_URI, null,
                         Phone_CONTACT_ID + " = ?", arrayOf(contact_id), null)
                 while (phoneCursor.moveToNext()) {
-                    contactLongInfo.phone.add(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)))
+                    contactLongInfo.info.add(Info(Info.TYPE_CONTACT_PHONE, phoneCursor.getString(
+                            phoneCursor.getColumnIndex(NUMBER))))
                 }
                 phoneCursor.close()
             }
             val emailCursor = contentResolver.query(EMAIL_CONTENT_URI, null,
                     EMAIL_CONTACT_ID + " = ?", arrayOf(contact_id), null)
             if (emailCursor.moveToNext()) {
-                contactLongInfo.email = emailCursor.getString(emailCursor.getColumnIndex(EMAIL))
+                contactLongInfo.info.add(Info(Info.TYPE_CONTACT_EMAIL,
+                        emailCursor.getString(emailCursor.getColumnIndex(EMAIL))))
             } else {
-                contactLongInfo.email = App.context.getString(R.string.no_email_value)
+                contactLongInfo.info.add(Info(Info.TYPE_CONTACT_EMAIL, App.context.getString(R.string.no_email_value)))
             }
             emailCursor.close()
             cursor.close()
@@ -171,21 +166,13 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     private fun getContactsList(): MutableList<ContactShortInfo> {
         val contactsList: MutableList<ContactShortInfo> = ArrayList()
         var lastLiteral = ""
-        val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
+        val cursor = contentResolver.query(CONTENT_URI, null, null, null, DISPLAY_NAME + " ASC")
         while (cursor.moveToNext()) {
             val contactShortInfo = ContactShortInfo(-1, "", "", "",
                     ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER)
             contactShortInfo.id = cursor.getLong(cursor.getColumnIndex(_ID))
             val contact_id = contactShortInfo.id.toString()/*cursor.getString(cursor.getColumnIndex(_ID))*/
             val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
-            /****************/
-            val tempLiteral = getPlaceHolderLiteral(name)
-            if (lastLiteral != tempLiteral){
-                contactsList.add(ContactShortInfo(-1, tempLiteral, "", "",
-                        ContactShortInfo.SHORT_INFO_GROUP))
-                lastLiteral = tempLiteral
-            }
-            /***************/
             val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
             if (hasPhoneNumber > 0) {
                 contactShortInfo.name = name
@@ -200,13 +187,21 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             if (photo != null) {
                 contactShortInfo.photoUriString = photo
                 contactShortInfo.type = ContactShortInfo.SHORT_INFO_PHOTO
-            }
-            else {
-                contactShortInfo.photoUriString = getPlaceHolderLiteral(name)
+            } else {
+                /*RegexPicker.getInitials(name)*/
+                contactShortInfo.photoUriString = RegexPicker.getInitials(name)/*getPlaceHolderLiteral(name)*/
                 contactShortInfo.type = ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER
             }
-            if (contactShortInfo.name != "" || contactShortInfo.phone != "")
+            if (contactShortInfo.name != "" || contactShortInfo.phone != "") {
+                val tempLiteral = getPlaceHolderLiteral(name)
+                if (lastLiteral != tempLiteral){
+                    contactsList.add(ContactShortInfo(-1, tempLiteral, "", "",
+                            ContactShortInfo.SHORT_INFO_GROUP))
+                    lastLiteral = tempLiteral
+                    lastLiteral.length
+                }
                 contactsList.add(contactShortInfo)
+            }
         }
         cursor.close()
         return contactsList

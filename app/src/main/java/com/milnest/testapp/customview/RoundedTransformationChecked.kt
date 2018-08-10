@@ -25,7 +25,7 @@ class RoundedTransformationChecked// radius is corner radii in dp
         else
             size = source.width
         textPaint.textSize = size.toFloat()
-        textPaint.color = App.context.resources.getColor(R.color.lum_red)
+        textPaint.color = App.context.resources.getColor(R.color.colorAccent)
         val textBounds = Rect()
         textPaint.getTextBounds("V", 0, "V".length, textBounds)
         canvas.drawText("V", source.width/2 - textPaint.measureText("V")/2, source.height/2.toFloat() + textBounds.height()/2, textPaint)

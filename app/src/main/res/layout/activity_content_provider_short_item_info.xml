@@ -21,8 +21,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.milnest.testapp.customview.ContactPhotoHolder
-        android:id="@+id/contactPhotoHolderShortInfo"
+    <com.milnest.testapp.customview.ContactPhotoPlaceholder
+        android:id="@+id/contactPhotoPlaceholder"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -30,7 +30,7 @@
         app:cph_radius="23dp"
         app:cph_text="DA"
         app:cph_text_color="@color/colorBlack"
-        app:cph_text_size="40sp" />
+        app:cph_text_size="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

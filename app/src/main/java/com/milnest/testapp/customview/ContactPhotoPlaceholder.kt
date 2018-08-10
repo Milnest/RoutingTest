@@ -11,13 +11,13 @@ import android.view.View
 import com.milnest.testapp.App
 import com.milnest.testapp.R
 
-class ContactPhotoHolder(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
-    val atrArray: TypedArray = context!!.theme.obtainStyledAttributes(attrs, R.styleable.ContactPhotoHolder, 0, 0)
-    var textColor = atrArray.getColor(R.styleable.ContactPhotoHolder_cph_text_color, resources.getColor(R.color.colorBlack))
-    var textSize = atrArray.getDimensionPixelSize(R.styleable.ContactPhotoHolder_cph_text_size, 20)
-    var text = atrArray.getString(R.styleable.ContactPhotoHolder_cph_text)
-    var radius = atrArray.getDimension(R.styleable.ContactPhotoHolder_cph_radius, 0f)
-    var color = atrArray.getColor(R.styleable.ContactPhotoHolder_cph_background_color, resources.getColor(R.color.colorBlueGray_500))
+class ContactPhotoPlaceholder(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
+    val atrArray: TypedArray = context!!.theme.obtainStyledAttributes(attrs, R.styleable.ContactPhotoPlaceholder, 0, 0)
+    var textColor = atrArray.getColor(R.styleable.ContactPhotoPlaceholder_cph_text_color, resources.getColor(R.color.colorBlack))
+    var textSize = atrArray.getDimensionPixelSize(R.styleable.ContactPhotoPlaceholder_cph_text_size, 20)
+    var text = atrArray.getString(R.styleable.ContactPhotoPlaceholder_cph_text)
+    var radius = atrArray.getDimension(R.styleable.ContactPhotoPlaceholder_cph_radius, 0f)
+    var color = atrArray.getColor(R.styleable.ContactPhotoPlaceholder_cph_background_color, resources.getColor(R.color.colorBlueGray_500))
     var myHeight = height
     var myWidth = width
     var centerX = width/2

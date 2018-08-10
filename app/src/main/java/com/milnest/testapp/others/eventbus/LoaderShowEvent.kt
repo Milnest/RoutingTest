@@ -1,3 +1,3 @@
-package com.milnest.testapp.entities.eventbus
+package com.milnest.testapp.others.eventbus
 
 data class LoaderShowEvent(val progressBarState : Boolean)

@@ -12,7 +12,7 @@
         <attr name="cd_h" format="dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="ContactPhotoHolder">
+    <declare-styleable name="ContactPhotoPlaceholder">
         <attr name="cph_text_color" format="color"/>
         <attr name="cph_text_size" format="dimension"/>
         <attr name="cph_text" format="string"/>
