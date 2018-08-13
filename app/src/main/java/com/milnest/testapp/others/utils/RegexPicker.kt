@@ -13,7 +13,7 @@ object RegexPicker {
             //val gr1 = matcherInitials.group(1)
             val gr2 = matcherInitials.group(2)
             val gr3 = matcherInitials.group(3)
-            return gr2.take(1)+gr3.take(1)
+            return gr2.take(1) + gr3.take(1)
         }
         else
             return nameString.take(1)

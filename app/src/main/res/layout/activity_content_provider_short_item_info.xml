@@ -18,7 +18,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/colorWhite"
     android:layout_height="wrap_content"
+    android:paddingStart="8dp"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp"
+    android:paddingEnd="8dp"
+    android:elevation="-1dp"
     android:orientation="horizontal">
 
     <com.milnest.testapp.customview.ContactPhotoPlaceholder
@@ -30,12 +36,12 @@
         app:cph_radius="23dp"
         app:cph_text="DA"
         app:cph_text_color="@color/colorBlack"
+        app:cph_text_color_second="@color/colorBlack"
         app:cph_text_size="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/layout_rounded_corners"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="15dp"

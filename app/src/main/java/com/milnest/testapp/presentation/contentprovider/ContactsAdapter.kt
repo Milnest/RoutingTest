@@ -13,6 +13,7 @@ import com.milnest.testapp.customview.ContactPhotoPlaceholder
 import com.milnest.testapp.customview.RoundedTransformation
 import com.milnest.testapp.customview.RoundedTransformationChecked
 import com.milnest.testapp.entities.ContactShortInfo
+import com.milnest.testapp.others.utils.ColorPick
 import com.milnest.testapp.tasklist.presentation.main.IClickListener
 import com.squareup.picasso.Picasso
 
@@ -62,12 +63,23 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
             }
             ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER -> {
                 contactHolder = contactHolder as ShortContactWithoutPhotoHolder
-                if (selectedPosition != position)
-                    (contactHolder).photoPlaceholder.text = contactsList[position].photoUriString
-                else {
-                    (contactHolder).photoPlaceholder.text = "V"
-                    contactHolder.photoPlaceholder.color = App.context.resources.getColor(R.color.colorBlueGray_500)
+                if (selectedPosition != position) {
+
+                    contactHolder.photoPlaceholder.isActive = false
+                    /*(contactHolder).photoPlaceholder.text = contactsList[position].photoUriString
+                    val colors = ColorPick.pickLiteralColors()
+                    contactHolder.photoPlaceholder.textColor = colors.first
+                    contactHolder.photoPlaceholder.textColorSecond = colors.second*/
                 }
+                else {
+                    contactHolder.photoPlaceholder.isActive = true
+                    //(contactHolder).photoPlaceholder.text = "V"
+                    //contactHolder.photoPlaceholder.color = App.context.resources.getColor(R.color.colorBlueGray_500)
+                }
+                (contactHolder).photoPlaceholder.text = contactsList[position].photoUriString
+                val colors = ColorPick.pickLiteralColors()
+                contactHolder.photoPlaceholder.textColor = colors.first
+                contactHolder.photoPlaceholder.textColorSecond = colors.second
                 contactHolder.nameTextView.text = contactsList[position].name
                 contactHolder.phoneTextView.text = contactsList[position].phone
             }

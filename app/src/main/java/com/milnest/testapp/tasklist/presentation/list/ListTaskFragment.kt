@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.milnest.testapp.App
 import com.milnest.testapp.R
+import com.milnest.testapp.others.components.DividerDecoration
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
 import com.milnest.testapp.tasklist.ID
@@ -17,6 +19,7 @@ class ListTaskFragment : BaseFragment(), ListTaskView {
 
     private fun initPresenter() {
         recycler_view_cb.layoutManager = LinearLayoutManager(context)
+        recycler_view_cb.addItemDecoration(DividerDecoration(App.context, R.drawable.divider, 0))
         taskPresenter.setAdapter(recycler_view_cb)
         taskPresenter.setStartList(arguments)
     }

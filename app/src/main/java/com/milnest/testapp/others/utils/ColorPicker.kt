@@ -13,14 +13,14 @@ object ColorPick{
     private val LIGHT_GREEN = App.context.resources.getColor(R.color.light_green_a400)
     private val BROWN = App.context.resources.getColor(R.color.brown_700)
     private val PURPLE = App.context.resources.getColor(R.color.purple_a200)
-    val colorArrayList = arrayListOf(DEEP_PURPLE, CYAN, RED, BLUE, GREEN, LIGHT_GREEN, BROWN, PURPLE)
-}
 
-fun pickLiteralColors(): Pair<Int, Int>{
-    val colorNumber = (Random().nextInt(ColorPick.colorArrayList.size))
-    val firstColor = ColorPick.colorArrayList[colorNumber]
-    val tempList = ColorPick.colorArrayList
-    tempList.remove(firstColor)
-    val secondColor = tempList[Random().nextInt(tempList.size)]
-    return Pair(firstColor, secondColor)
+    fun pickLiteralColors(): Pair<Int, Int>{
+        val colorArrayList = arrayListOf(DEEP_PURPLE, CYAN, RED, BLUE, GREEN, LIGHT_GREEN, BROWN, PURPLE)
+        val colorNumber = (Random().nextInt(colorArrayList.size))
+        val firstColor = colorArrayList[colorNumber]
+        val tempList = colorArrayList
+        tempList.remove(firstColor)
+        val secondColor = tempList[Random().nextInt(tempList.size)]
+        return Pair(firstColor, secondColor)
+    }
 }

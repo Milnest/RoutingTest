@@ -14,9 +14,11 @@
 
     <declare-styleable name="ContactPhotoPlaceholder">
         <attr name="cph_text_color" format="color"/>
+        <attr name="cph_text_color_second" format="color"/>
         <attr name="cph_text_size" format="dimension"/>
         <attr name="cph_text" format="string"/>
         <attr name="cph_radius" format="dimension"/>
         <attr name="cph_background_color" format="color"/>
+        <attr name="cph_is_active" format="boolean" />
     </declare-styleable>
 </resources>

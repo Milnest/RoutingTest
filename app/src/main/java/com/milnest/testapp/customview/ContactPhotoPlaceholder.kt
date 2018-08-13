@@ -14,10 +14,12 @@ import com.milnest.testapp.R
 class ContactPhotoPlaceholder(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     val atrArray: TypedArray = context!!.theme.obtainStyledAttributes(attrs, R.styleable.ContactPhotoPlaceholder, 0, 0)
     var textColor = atrArray.getColor(R.styleable.ContactPhotoPlaceholder_cph_text_color, resources.getColor(R.color.colorBlack))
+    var textColorSecond = atrArray.getColor(R.styleable.ContactPhotoPlaceholder_cph_text_color_second, resources.getColor(R.color.colorBlack))
     var textSize = atrArray.getDimensionPixelSize(R.styleable.ContactPhotoPlaceholder_cph_text_size, 20)
     var text = atrArray.getString(R.styleable.ContactPhotoPlaceholder_cph_text)
     var radius = atrArray.getDimension(R.styleable.ContactPhotoPlaceholder_cph_radius, 0f)
     var color = atrArray.getColor(R.styleable.ContactPhotoPlaceholder_cph_background_color, resources.getColor(R.color.colorBlueGray_500))
+    var isActive = atrArray.getBoolean(R.styleable.ContactPhotoPlaceholder_cph_is_active, false)
     var myHeight = height
     var myWidth = width
     var centerX = width / 2
@@ -34,19 +36,27 @@ class ContactPhotoPlaceholder(context: Context?, attrs: AttributeSet?) : View(co
             textPaint.color = textColor
             textPaint.textSize = textSize.toFloat()/*35.0f*/
             textPaint.strokeWidth = 2.0f
-            textPaint.style = Paint.Style.STROKE
+            if (!isActive)
+                textPaint.style = Paint.Style.STROKE
+            else
+                textPaint.style = Paint.Style.FILL_AND_STROKE
             return textPaint
         }
     val textPaintSecond: Paint
         get() {
             val textPaint = Paint()
             textPaint.isAntiAlias = true
-            textPaint.color = App.context.resources.getColor(R.color.red_a400)
+            textPaint.color = textColorSecond
             textPaint.textSize = textSize.toFloat()/*35.0f*/
             textPaint.strokeWidth = 2.0f
-            textPaint.style = Paint.Style.FILL_AND_STROKE
+            if (!isActive)
+                textPaint.style = Paint.Style.STROKE
+            else
+                textPaint.style = Paint.Style.FILL_AND_STROKE
             return textPaint
         }
+    private var firstLiteral: String = ""
+    private var secondLiteral: String = ""
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -66,17 +76,22 @@ class ContactPhotoPlaceholder(context: Context?, attrs: AttributeSet?) : View(co
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas ?: return
+        /******/
+        firstLiteral = text.get(0).toString()
+        if (text.length > 1)
+            secondLiteral = text.get(1).toString()
+        /******/
         paint.style = Paint.Style.FILL_AND_STROKE
         paint.color = color
         canvas.drawCircle(centerX.toFloat(), centerY.toFloat(), radius, paint)
         textPaint.getTextBounds(text, 0, text.length, textBounds)
-        textPaint.getTextBounds(text.take(1), 0, text.take(1).length, textBoundsFirst)
+        textPaint.getTextBounds(firstLiteral, 0, firstLiteral.length, textBoundsFirst)
         if (textBounds.height() <= size && textBounds.width() <= size) {
             val x_interval = centerX.toFloat() - textPaint.measureText(text) / 2
-            canvas.drawText(text.take(1), x_interval, centerY.toFloat() + textBounds.height() / 2, textPaint)
+            canvas.drawText(firstLiteral, x_interval, centerY.toFloat() + textBounds.height() / 2, textPaint)
             if (text.length > 1) {
-                textPaintSecond.getTextBounds(text.get(1).toString(), 0, text.get(1).toString().length, textBoundsSecond)
-                canvas.drawText(text.get(1).toString(), x_interval + textPaint.measureText(text.take(1)), centerY.toFloat() + textBounds.height() / 2, textPaintSecond)
+                textPaintSecond.getTextBounds(secondLiteral, 0, secondLiteral.length, textBoundsSecond)
+                canvas.drawText(secondLiteral, x_interval + textPaint.measureText(firstLiteral), centerY.toFloat() + textBounds.height() / 2, textPaintSecond)
             }
         } else
             textPaint.textSize = 10f

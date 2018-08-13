@@ -189,7 +189,8 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 contactShortInfo.type = ContactShortInfo.SHORT_INFO_PHOTO
             } else {
                 /*RegexPicker.getInitials(name)*/
-                contactShortInfo.photoUriString = RegexPicker.getInitials(name)/*getPlaceHolderLiteral(name)*/
+                val regexName = RegexPicker.getInitials(name)
+                contactShortInfo.photoUriString = regexName/*RegexPicker.getInitials(name)*//*getPlaceHolderLiteral(name)*/
                 contactShortInfo.type = ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER
             }
             if (contactShortInfo.name != "" || contactShortInfo.phone != "") {

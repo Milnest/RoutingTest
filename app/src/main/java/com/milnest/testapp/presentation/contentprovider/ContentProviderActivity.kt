@@ -26,6 +26,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_content_provider.*
+import kotlinx.android.synthetic.main.fragment_list_task.*
 
 
 class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
@@ -78,9 +79,10 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     fun fillRecycler(){
         recyclerViewContactsShort.adapter = presenter.getContactsAdapter()
-        //recyclerViewContactsShort.addItemDecoration(DividerDecoration(App.context))
+        recyclerViewContactsShort.addItemDecoration(DividerDecoration(App.context, R.drawable.divider, 0))
         recyclerViewContactsShort.layoutManager = LinearLayoutManager(App.context)
         recyclerViewEventsShort.adapter = presenter.getMyEventsAdapter()
+        recyclerViewEventsShort.addItemDecoration(DividerDecoration(App.context, R.drawable.divider, 0))
         recyclerViewEventsShort.layoutManager = LinearLayoutManager(App.context)
     }
     override fun showInfo(info: ContactLongInfo) {
@@ -126,6 +128,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Log.d(this.javaClass.simpleName, "***** fun onPause")
+        Log.d(this.javaClass.simpleName, "***** 111")
     }
 
     override fun onStop() {
