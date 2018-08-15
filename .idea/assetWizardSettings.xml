@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/E:/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/communication/ic_call_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/E:/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_network_cell_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -33,9 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_call_phone" />
+                                      <entry key="outputName" value="ic_network_on" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="3de539" />
+                                      <entry key="themeColor" value="3d0b4e" />
                                     </map>
                                   </option>
                                 </PersistentState>

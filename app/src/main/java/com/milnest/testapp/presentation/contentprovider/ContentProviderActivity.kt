@@ -1,23 +1,25 @@
 package com.milnest.testapp.presentation.contentprovider
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.jackandphantom.blurimage.BlurImage
 import com.milnest.testapp.App
 import com.milnest.testapp.R
 import com.milnest.testapp.customview.ContactPhotoBackgroundTransformation
 import com.milnest.testapp.customview.ContactPhotoTransformation
 import com.milnest.testapp.customview.ContactPlaceholderBackground
+import com.milnest.testapp.customview.ContactPlaceholderTransformation
 import com.milnest.testapp.entities.ContactLongInfo
 import com.milnest.testapp.entities.Info
 import com.milnest.testapp.others.components.DividerDecoration
@@ -26,7 +28,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_content_provider.*
-import kotlinx.android.synthetic.main.fragment_list_task.*
 
 
 class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
@@ -89,7 +90,8 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         //TODO: в презентер, как setUpImages
         /***************/
         if (info.photo.type == Info.TYPE_CONTACT_PHOTO) {
-            Picasso.get().load(Uri.parse(info.photo.content)).transform(ContactPhotoTransformation(0)).fit().centerInside().into(contactInfoPhotoImg)
+
+            Picasso.get().load(Uri.parse(info.photo.content)).transform(ContactPhotoTransformation(0))/*.fit().centerInside()*/.into(contactInfoPhotoImg)
             Observable.just(Uri.parse(info.photo.content))
                     .subscribeOn(Schedulers.io())
                     .map { photoUri ->
@@ -98,12 +100,24 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
                                 .transform(ContactPhotoBackgroundTransformation())
                                 .get()
                     }
+                    .map { bitmap -> BlurImage.with(App.context).load(bitmap).intensity(5f).Async(false).imageBlur }
                     .map { bitmap -> BitmapDrawable(App.context.resources, bitmap) }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { drawable -> contactInfoPhotoImg.background = drawable }
+                    .subscribe { drawable -> photoCenter.setImageDrawable(drawable)/*contactInfoPhotoImg.background = drawable*/ }
         }
         else{
-            Picasso.get().load(R.drawable.blank).transform(ContactPlaceholderBackground(0)).fit().centerInside().into(contactInfoPhotoImg)
+            Picasso.get().load(R.drawable.blank)/*.fit().centerInside()*/.transform(ContactPlaceholderTransformation(0, info.id, info.photo.content, info.color)).into(contactInfoPhotoImg)
+            Observable.just(R.drawable.blank)
+                    .subscribeOn(Schedulers.io())
+                    .map { photoBlank ->
+                        Picasso.get()
+                                .load(photoBlank)
+                                .transform(ContactPlaceholderBackground(0, App.context.resources.getColor(R.color.yellow_a400)))
+                                .get()
+                    }
+                    .map { bitmap -> BitmapDrawable(App.context.resources, bitmap) }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { drawable -> photoBack.background = drawable }
         }
         /***************/
         val adapter = InfoAdapter(presenter.phoneListener)
@@ -128,7 +142,6 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Log.d(this.javaClass.simpleName, "***** fun onPause")
-        Log.d(this.javaClass.simpleName, "***** 111")
     }
 
     override fun onStop() {

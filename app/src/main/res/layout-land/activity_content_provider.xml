@@ -27,12 +27,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.9"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:id="@+id/photoBack"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0.4"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
@@ -51,6 +51,31 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/contact_img" />
             </FrameLayout>
+            <!--<LinearLayout
+                android:id="@+id/photoBack"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2" />
+
+                <ImageView
+                    android:id="@+id/contactInfoPhotoImg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:contentDescription="@string/contact_img" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2" />
+            </LinearLayout>-->
 
             <!--<TextView
                 android:id="@+id/contactName"
@@ -66,8 +91,10 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewContactInfo"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0.6"/>
 
         </LinearLayout>

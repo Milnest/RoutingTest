@@ -1,5 +1,6 @@
 package com.milnest.testapp.presentation.contentprovider
 
+import android.graphics.Color
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,7 +18,7 @@ import com.milnest.testapp.others.utils.ColorPick
 import com.milnest.testapp.tasklist.presentation.main.IClickListener
 import com.squareup.picasso.Picasso
 
-class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ContactsAdapter(val iClickListener: IClickListener, val contactWithoutPhotoClickListener: ContactWithoutPhotoClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var contactsList: MutableList<ContactShortInfo> = ArrayList()
         set(value) {
             field = value
@@ -63,21 +64,10 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
             }
             ContactShortInfo.SHORT_INFO_PHOTO_PLACEHOLDER -> {
                 contactHolder = contactHolder as ShortContactWithoutPhotoHolder
-                if (selectedPosition != position) {
-
-                    contactHolder.photoPlaceholder.isActive = false
-                    /*(contactHolder).photoPlaceholder.text = contactsList[position].photoUriString
-                    val colors = ColorPick.pickLiteralColors()
-                    contactHolder.photoPlaceholder.textColor = colors.first
-                    contactHolder.photoPlaceholder.textColorSecond = colors.second*/
-                }
-                else {
-                    contactHolder.photoPlaceholder.isActive = true
-                    //(contactHolder).photoPlaceholder.text = "V"
-                    //contactHolder.photoPlaceholder.color = App.context.resources.getColor(R.color.colorBlueGray_500)
-                }
+                contactHolder.photoPlaceholder.isActive = selectedPosition == position
                 (contactHolder).photoPlaceholder.text = contactsList[position].photoUriString
                 val colors = ColorPick.pickLiteralColors()
+                contactsList[position].color = colors.first
                 contactHolder.photoPlaceholder.textColor = colors.first
                 contactHolder.photoPlaceholder.textColorSecond = colors.second
                 contactHolder.nameTextView.text = contactsList[position].name
@@ -124,10 +114,19 @@ class ContactsAdapter(val iClickListener: IClickListener) : RecyclerView.Adapter
 
         init {
             itemView.setOnClickListener {
-                iClickListener.onItemClick(layoutPosition)
+                //iClickListener.onItemClick(layoutPosition)
+                contactWithoutPhotoClickListener.onItemClick(layoutPosition, getItemColor(layoutPosition))
                 selectedPosition = adapterPosition
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun getItemColor(position: Int): Int {
+        return contactsList.get(position).color
+    }
+
+    interface ContactWithoutPhotoClickListener{
+        fun onItemClick(position: Int, color: Int)
     }
 }

@@ -1,6 +1,6 @@
 package com.milnest.testapp.entities
 
-data class Info(var type: Int, var content: String) {
+class Info(var type: Int, var content: String) {
     companion object {
         const val TYPE_CONTACT_PHOTO = 0
         const val TYPE_CONTACT_PHOTO_HOLDER = 1

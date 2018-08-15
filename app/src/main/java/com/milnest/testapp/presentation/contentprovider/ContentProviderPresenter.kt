@@ -2,6 +2,7 @@ package com.milnest.testapp.presentation.contentprovider
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.provider.CalendarContract
 import android.provider.ContactsContract
@@ -46,7 +47,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     val EVENT_DESC = CalendarContract.Events.DESCRIPTION
 
     init {
-        adapter = ContactsAdapter(contactClickListener)
+        adapter = ContactsAdapter(contactClickListener, contactWithoutPhotoClickListener)
     }
 
     fun getMyEventsAdapter(): EventsAdapter? {
@@ -100,6 +101,15 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             }
         }
 
+    val contactWithoutPhotoClickListener
+    get() = object : ContactsAdapter.ContactWithoutPhotoClickListener {
+        override fun onItemClick(position: Int, color: Int) {
+            val longInfo = getContactInfo(position, color)
+            viewState.showInfo(longInfo)
+        }
+
+    }
+
     val acceptListener
         get() = object : View.OnClickListener {
             override fun onClick(view: View?) {
@@ -131,6 +141,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             //*******//
             val photo = cursor.getString(cursor.getColumnIndex(CONTACT_PHOTO))
             if (photo != null) contactLongInfo.photo = Info(Info.TYPE_CONTACT_PHOTO, photo)
+            else contactLongInfo.photo = Info(Info.TYPE_CONTACT_PHOTO_HOLDER, RegexPicker.getInitials(name))
             //*******//
             val hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)))
             if (hasPhoneNumber > 0) {
@@ -154,6 +165,12 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             cursor.close()
         }
         return contactLongInfo
+    }
+
+    private fun getContactInfo(position: Int, color: Int): ContactLongInfo{
+        val info = getContactInfo(position)
+        info.color = color
+        return info
     }
 
     private fun getPlaceHolderLiteral(name: String?): String {
@@ -245,7 +262,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
 
     fun onStop() {
         if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this);
+            EventBus.getDefault().unregister(this)
     }
 
     fun onStart() {

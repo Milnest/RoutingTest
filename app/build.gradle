@@ -8,6 +8,8 @@ android {
         applicationId "com.milnest.testapp"
         minSdkVersion 21
         targetSdkVersion 27
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -50,6 +52,7 @@ dependencies {
     compile 'com.google.dagger:dagger-android-support:2.16'
     kapt 'com.google.dagger:dagger-android-processor:2.16'
     implementation'org.greenrobot:eventbus:3.1.1'
+    implementation 'com.jackandphantom.android:blurimage:1.2.0'
 }
 repositories {
     mavenCentral()
