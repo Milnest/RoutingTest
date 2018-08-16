@@ -14,4 +14,5 @@ interface ContentProviderView : MvpView {
     fun hideEvents()
     fun showContacts()
     fun hideContacts()
+    fun scrollToLast(position: Int)
 }

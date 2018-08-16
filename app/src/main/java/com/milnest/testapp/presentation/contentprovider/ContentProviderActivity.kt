@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.ToggleButton
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.jackandphantom.blurimage.BlurImage
@@ -56,6 +57,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     private fun bindViews() {
         setUpDrawerBar()
+        drawer_layout.addDrawerListener(presenter.drawerListener)
         button_accept.setOnClickListener(presenter.acceptListener)
         button_show_events.setOnClickListener(presenter.showButtonListener)
         button_show_contacts.setOnClickListener(presenter.showButtonListener)
@@ -145,6 +147,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     override fun showEvents() {
         recyclerViewEventsShort.visibility = View.VISIBLE
+        button_show_events.setBackgroundColor(resources.getColor(R.color.yellow_a400))
         drawer_layout.closeDrawer(nav_view_left)
         setLockContactsDrawer(true)
     }
@@ -158,10 +161,13 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     override fun hideEvents() {
         recyclerViewEventsShort.visibility = View.GONE
+        button_show_events.setBackgroundColor(resources.getColor(R.color.colorWhite))
+        //button_show_events.isChecked = false
     }
 
     override fun showContacts() {
         contactsLayout.visibility = View.VISIBLE
+        button_show_contacts.setBackgroundColor(resources.getColor(R.color.yellow_a400))
         drawer_layout.closeDrawer(nav_view_left)
         drawer_layout.openDrawer(nav_view_right)
         setLockContactsDrawer(false)
@@ -169,6 +175,12 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     override fun hideContacts() {
         contactsLayout.visibility = View.GONE
+        button_show_contacts.setBackgroundColor(resources.getColor(R.color.colorWhite))
+        //button_show_contacts.isChecked = false
+    }
+
+    override fun scrollToLast(position: Int) {
+        recyclerViewContactsShort.scrollToPosition(position)
     }
 
     override fun onPause() {

@@ -5,7 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.CalendarContract
 import android.provider.ContactsContract
+import android.support.v4.widget.DrawerLayout
 import android.view.View
+import android.widget.RadioGroup
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
@@ -27,6 +29,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     var eventsAdapter: EventsAdapter? = null
 
     private var lastContactId: Long = -1
+    private var lastPosition: Int = 0
     val contentResolver = App.context.contentResolver
     val CONTENT_URI = ContactsContract.Contacts.CONTENT_URI
     val _ID = ContactsContract.Contacts._ID
@@ -140,10 +143,31 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 }
             }
         }
+    }
+
+    val drawerListener
+    get() = object : DrawerLayout.DrawerListener {
+        override fun onDrawerStateChanged(newState: Int) {
+
+        }
+
+        override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+        }
+
+        override fun onDrawerClosed(drawerView: View) {
+
+        }
+
+        override fun onDrawerOpened(drawerView: View) {
+            if (drawerView.id == R.id.nav_view_right)
+                viewState.scrollToLast(lastPosition)
+        }
 
     }
 
     private fun getContactInfo(position: Int): ContactLongInfo {
+        lastPosition = position
         val infoList: MutableList<Info> = ArrayList()
         /*phonesList.add("")*/
         val contactLongInfo = ContactLongInfo(-1, infoList, Info(Info.TYPE_CONTACT_PHOTO_HOLDER, ""))
