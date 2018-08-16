@@ -1,6 +1,5 @@
 package com.milnest.testapp.presentation.contentprovider
 
-import android.graphics.Color
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.milnest.testapp.App
 import com.milnest.testapp.R
 import com.milnest.testapp.customview.ContactPhotoPlaceholder
 import com.milnest.testapp.customview.RoundedTransformation

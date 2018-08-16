@@ -46,4 +46,8 @@
     <string name="phoneTitle">phone:</string>
     <string name="nameTitle">name:</string>
     <string name="call_phone">Вызвать номер</string>
+    <string name="connect_info_title">Сведения о подключении</string>
+    <string name="internet_on">Выполнено подключение к интернету</string>
+    <string name="show_contacts">Показать контакты</string>
+    <string name="show_events">Показать события</string>
 </resources>

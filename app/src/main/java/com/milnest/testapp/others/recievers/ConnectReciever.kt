@@ -16,8 +16,8 @@ class ConnectReciever : BroadcastReceiver() {
     private val notificationManager = App.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private val notificationBuilder = NotificationCompat.Builder(App.context, "Main channel")
             .setSmallIcon(R.drawable.ic_network_on)
-            .setContentTitle("Сведения о подключении")
-            .setContentText("Выполнено подключение к интернету")
+            .setContentTitle(App.context.getString(R.string.connect_info_title))
+            .setContentText(App.context.getString(R.string.internet_on))
             .setAutoCancel(false)
             .setOngoing(true)
 

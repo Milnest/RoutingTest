@@ -16,7 +16,7 @@ class EventsAdapter(val iClickListener: IClickListener): RecyclerView.Adapter<Re
     var selectedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ShortContactItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_event_item, null, false))
+        return ShortContactItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_content_provider_event_item, parent, false))
     }
 
     override fun getItemCount(): Int {

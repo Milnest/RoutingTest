@@ -1,10 +1,10 @@
 package com.milnest.testapp.presentation.contentprovider
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -57,6 +57,8 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
     private fun bindViews() {
         setUpDrawerBar()
         button_accept.setOnClickListener(presenter.acceptListener)
+        button_show_events.setOnClickListener(presenter.showButtonListener)
+        button_show_contacts.setOnClickListener(presenter.showButtonListener)
     }
 
     fun setUpDrawerBar(){
@@ -64,6 +66,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         drawer_layout.addDrawerListener(bar)
         bar.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setLockContactsDrawer(true)
     }
 
     override fun onStart() {
@@ -82,6 +85,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         recyclerViewContactsShort.adapter = presenter.getContactsAdapter()
         recyclerViewContactsShort.addItemDecoration(DividerDecoration(App.context, R.drawable.divider, 0))
         recyclerViewContactsShort.layoutManager = LinearLayoutManager(App.context)
+        //TODO: ресайклер в корневую вью
         recyclerViewEventsShort.adapter = presenter.getMyEventsAdapter()
         recyclerViewEventsShort.addItemDecoration(DividerDecoration(App.context, R.drawable.divider, 0))
         recyclerViewEventsShort.layoutManager = LinearLayoutManager(App.context)
@@ -137,6 +141,34 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         else{
             progressBar.visibility = ProgressBar.GONE
         }
+    }
+
+    override fun showEvents() {
+        recyclerViewEventsShort.visibility = View.VISIBLE
+        drawer_layout.closeDrawer(nav_view_left)
+        setLockContactsDrawer(true)
+    }
+
+    fun setLockContactsDrawer(isLock: Boolean){
+        if (isLock)
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, nav_view_right)
+        else
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, nav_view_right)
+    }
+
+    override fun hideEvents() {
+        recyclerViewEventsShort.visibility = View.GONE
+    }
+
+    override fun showContacts() {
+        contactsLayout.visibility = View.VISIBLE
+        drawer_layout.closeDrawer(nav_view_left)
+        drawer_layout.openDrawer(nav_view_right)
+        setLockContactsDrawer(false)
+    }
+
+    override fun hideContacts() {
+        contactsLayout.visibility = View.GONE
     }
 
     override fun onPause() {

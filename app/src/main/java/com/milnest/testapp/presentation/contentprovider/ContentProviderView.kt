@@ -10,4 +10,8 @@ interface ContentProviderView : MvpView {
     fun finish()
     fun interactProgressBar(show: Boolean)
     fun startActivity(callIntent: Intent)
+    fun showEvents()
+    fun hideEvents()
+    fun showContacts()
+    fun hideContacts()
 }

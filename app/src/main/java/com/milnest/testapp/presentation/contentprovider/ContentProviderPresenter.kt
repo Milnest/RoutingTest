@@ -2,7 +2,6 @@ package com.milnest.testapp.presentation.contentprovider
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.provider.CalendarContract
 import android.provider.ContactsContract
@@ -126,6 +125,23 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
                 viewState.startActivity(callIntent)
             }
         }
+
+    val showButtonListener
+    get() = object : View.OnClickListener {
+        override fun onClick(view: View) {
+            when(view.id){
+                R.id.button_show_events -> {
+                    viewState.hideContacts()
+                    viewState.showEvents()
+                }
+                R.id.button_show_contacts -> {
+                    viewState.hideEvents()
+                    viewState.showContacts()
+                }
+            }
+        }
+
+    }
 
     private fun getContactInfo(position: Int): ContactLongInfo {
         val infoList: MutableList<Info> = ArrayList()
