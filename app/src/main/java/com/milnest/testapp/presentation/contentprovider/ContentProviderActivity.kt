@@ -171,7 +171,6 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         drawer_layout.closeDrawer(nav_view_left)
         drawer_layout.openDrawer(nav_view_right)
         setLockContactsDrawer(false)
-
     }
 
     override fun hideContacts() {
@@ -193,6 +192,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         presenter.onStop()
         super.onStop()
         Log.d(this.javaClass.simpleName, "***** fun onStop")
+
     }
 
     override fun onDestroy() {
