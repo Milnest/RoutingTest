@@ -1,6 +1,7 @@
 package com.milnest.testapp.presentation.start
 
 import android.content.Intent
+import android.support.v4.app.FragmentTransaction
 import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -16,6 +17,7 @@ class StartPresenter : MvpPresenter<StartView>() {
                 when (p0.id) {
                     R.id.button_to_diag -> {
                         App.getRouter().navigateTo(FragType.DIAGRAM.name)
+                        //App.getRouter().navigateToWithAnimation(FragType.DIAGRAM.name, null, {addSharedElement()})
                     }
                     R.id.button_to_view_pager -> {
                         App.getRouter().navigateTo(FragType.VIEW_PAGER.name)

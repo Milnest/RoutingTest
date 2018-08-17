@@ -1,6 +1,7 @@
 package com.milnest.testapp.router
 
 import android.os.Bundle
+import android.support.v4.app.FragmentTransaction
 import ru.terrakok.cicerone.BaseRouter
 import ru.terrakok.cicerone.commands.Back
 import ru.terrakok.cicerone.commands.BackTo
@@ -14,6 +15,11 @@ class CustomRouter : BaseRouter() {
     @JvmOverloads
     fun navigateTo(screenKey: String, data: Any? = null) {
         executeCommand(Forward(screenKey, data))
+    }
+
+    @JvmOverloads
+    fun navigateToWithAnimation(screenKey: String, data: Any? = null, customTransaction: (FragmentTransaction.() -> Unit)) {
+        executeCommand(CustomForward(screenKey, data, customTransaction))
     }
 
     @JvmOverloads

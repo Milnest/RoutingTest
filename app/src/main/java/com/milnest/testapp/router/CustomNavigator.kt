@@ -2,6 +2,7 @@ package com.milnest.testapp.router
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.util.Log
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.commands.*
@@ -17,10 +18,12 @@ abstract class CustomNavigator protected constructor(private val fragmentManager
             fragmentManager.addOnBackStackChangedListener { splitListener.onChangeFragment() }
     }*/
 
-    @Synchronized override fun applyCommand(command: Command) {
+    @Synchronized
+    override fun applyCommand(command: Command) {
         val lastScreenKey = if (screenNames.isEmpty()) "" else screenNames[screenNames.size - 1]
         when (command) {
             is Forward -> forwardCommand(command, lastScreenKey)
+            is CustomForward -> customForwardCommand(command, lastScreenKey)
             is Back -> backCommand(command) //TODO: изменено здесь
             is ExitWithResult -> exitWithResultCommand(command)
             is Replace -> replaceCommand(command, lastScreenKey)
@@ -36,12 +39,23 @@ abstract class CustomNavigator protected constructor(private val fragmentManager
 
     private fun forwardCommand(command: Command, lastScreenKey: String) {
         val forward = command as Forward
-        fragmentManager.beginTransaction()
-                /*.setCustomAnimations(getEnterAnimation(lastScreenKey, forward.screenKey),
-                        getExitAnimation(lastScreenKey, forward.screenKey),
-                        getPopEnterAnimation(lastScreenKey, forward.screenKey),
-                        getPopExitAnimation(lastScreenKey, forward.screenKey))*/
-                .replace(containerId, createFragment(forward.screenKey, forward.transitionData))
+        val ft = fragmentManager.beginTransaction()
+        /*.setCustomAnimations(getEnterAnimation(lastScreenKey, forward.screenKey),
+                getExitAnimation(lastScreenKey, forward.screenKey),
+                getPopEnterAnimation(lastScreenKey, forward.screenKey),
+                getPopExitAnimation(lastScreenKey, forward.screenKey))*/
+        ft.replace(containerId, createFragment(forward.screenKey, forward.transitionData))
+                .addToBackStack(forward.screenKey)
+                .commit()
+        screenNames.add(command.screenKey)
+    }
+
+    private fun customForwardCommand(command: Command, lastScreenKey: String) {
+        val forward = command as CustomForward
+        val ft = fragmentManager.beginTransaction()
+        val customTransaction = forward.customTransaction
+        ft.customTransaction()
+        ft.replace(containerId, createFragment(forward.screenKey, forward.transitionData))
                 .addToBackStack(forward.screenKey)
                 .commit()
         screenNames.add(command.screenKey)
