@@ -16,8 +16,8 @@ class StartPresenter : MvpPresenter<StartView>() {
             override fun onClick(p0: View) { // - ?
                 when (p0.id) {
                     R.id.button_to_diag -> {
-                        App.getRouter().navigateTo(FragType.DIAGRAM.name)
-                        //App.getRouter().navigateToWithAnimation(FragType.DIAGRAM.name, null, {addSharedElement()})
+                        //App.getRouter().navigateTo(FragType.DIAGRAM.name)
+                        App.getRouter().navigateToWithAnimation(FragType.DIAGRAM.name, null, {addSharedElement(p0, p0.transitionName)})
                     }
                     R.id.button_to_view_pager -> {
                         App.getRouter().navigateTo(FragType.VIEW_PAGER.name)

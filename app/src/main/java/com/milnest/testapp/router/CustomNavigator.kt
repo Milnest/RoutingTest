@@ -1,9 +1,11 @@
 package com.milnest.testapp.router
 
+import android.support.transition.Fade
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.util.Log
+import com.milnest.testapp.others.components.ToDiagramTransition
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.commands.*
 
@@ -55,7 +57,12 @@ abstract class CustomNavigator protected constructor(private val fragmentManager
         val ft = fragmentManager.beginTransaction()
         val customTransaction = forward.customTransaction
         ft.customTransaction()
-        ft.replace(containerId, createFragment(forward.screenKey, forward.transitionData))
+        val tempFragment = createFragment(forward.screenKey, forward.transitionData)
+        tempFragment.sharedElementEnterTransition = ToDiagramTransition()
+        tempFragment.exitTransition = Fade()
+        tempFragment.enterTransition = Fade()
+        tempFragment.sharedElementReturnTransition = ToDiagramTransition()
+        ft.replace(containerId, tempFragment)
                 .addToBackStack(forward.screenKey)
                 .commit()
         screenNames.add(command.screenKey)

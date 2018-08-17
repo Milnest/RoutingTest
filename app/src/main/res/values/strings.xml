@@ -50,4 +50,5 @@
     <string name="internet_on">Выполнено подключение к интернету</string>
     <string name="show_contacts">Показать контакты</string>
     <string name="show_events">Показать события</string>
+    <string name="diag_trans_button">diag_trans_button</string>
 </resources>
