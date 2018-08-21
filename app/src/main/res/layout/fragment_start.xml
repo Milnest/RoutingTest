@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="@string/to_diag"
-        android:transitionName="@string/diag_trans_button"/>
+        android:alpha="1" />
 
     <Button
         android:id="@+id/button_to_view_pager"
@@ -49,5 +49,13 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="Открыть_контакт"/>
+
+    <Button
+        android:id="@+id/button_to_anim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Показать анимашку"
+        android:transitionName="@string/diag_trans_button" />
 
 </LinearLayout>

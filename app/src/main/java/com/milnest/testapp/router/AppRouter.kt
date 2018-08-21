@@ -3,6 +3,7 @@ package com.milnest.testapp.router
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import com.milnest.testapp.R
+import com.milnest.testapp.presentation.animation.AnimFragment
 import com.milnest.testapp.presentation.diagram.DiagramFragment
 import com.milnest.testapp.presentation.splash.SplashFragment
 import com.milnest.testapp.presentation.start.StartFragment
@@ -18,7 +19,8 @@ enum class FragType(name: String) {
     VIEW_PAGER(name = "view_pager"),
     TASK_LIST_MAIN(name = "task_list_main"),
     TASK_LIST_LIST(name = "task_list_list"),
-    TASK_LIST_TEXT(name = "task_list_text");
+    TASK_LIST_TEXT(name = "task_list_text"),
+    ANIMATION(name = "animation");
 
     fun createFragment(data: Bundle): BaseFragment = when (this) {
         SPLASH -> SplashFragment()
@@ -28,6 +30,7 @@ enum class FragType(name: String) {
         TASK_LIST_MAIN -> TaskListMainFragment()
         TASK_LIST_LIST -> ListTaskFragment.newInstance(data)
         TASK_LIST_TEXT -> TextTaskFragment.newInstance(data)
+        ANIMATION -> AnimFragment()
     }
 }
 

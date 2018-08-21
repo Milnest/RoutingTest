@@ -74,6 +74,7 @@ class StartFragment : BaseFragment(), StartView {
         button_to_demo.setOnClickListener(presenter.onClickListener)
         button_to_content_provider.setOnClickListener(presenter.onClickListener)
         button_start_contacts_list.setOnClickListener(presenter.onClickListener)
+        button_to_anim.setOnClickListener(presenter.onClickListener)
     }
 }
 

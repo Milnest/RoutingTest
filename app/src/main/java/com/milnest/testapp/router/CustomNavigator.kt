@@ -58,7 +58,7 @@ abstract class CustomNavigator protected constructor(private val fragmentManager
         val customTransaction = forward.customTransaction
         ft.customTransaction()
         val tempFragment = createFragment(forward.screenKey, forward.transitionData)
-        tempFragment.sharedElementEnterTransition = ToDiagramTransition()
+        tempFragment.sharedElementEnterTransition = ToDiagramTransition() /*Fade()*/
         tempFragment.exitTransition = Fade()
         tempFragment.enterTransition = Fade()
         tempFragment.sharedElementReturnTransition = ToDiagramTransition()

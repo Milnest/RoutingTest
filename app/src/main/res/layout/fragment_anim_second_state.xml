@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/anim_constraint_second_state"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/anim_main_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="sword img here"
+        android:background="@drawable/suigintou_sword" />
+
+    <TextView
+        android:id="@+id/anim_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGray_900"
+        android:textColor="@color/colorBlueGray_500"
+        android:text="this is sword"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@id/anim_main_image"/>
+
+    <LinearLayout
+        android:id="@+id/anim_text_title_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@id/anim_constraint_second_state">
+
+        <TextView
+            android:id="@+id/anim_text_title_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sword"
+            android:textColor="@color/colorBlueGray_500"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/anim_text_title_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Sword"
+            android:textColor="@color/colorBrown_200"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -51,7 +51,7 @@ dependencies {
     compile 'com.google.dagger:dagger-android:2.16'
     compile 'com.google.dagger:dagger-android-support:2.16'
     kapt 'com.google.dagger:dagger-android-processor:2.16'
-    implementation'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.jackandphantom.android:blurimage:1.2.0'
 }
 repositories {

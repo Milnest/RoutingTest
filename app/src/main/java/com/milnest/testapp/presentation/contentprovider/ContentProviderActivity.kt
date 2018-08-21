@@ -192,11 +192,13 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         presenter.onStop()
         super.onStop()
         Log.d(this.javaClass.simpleName, "***** fun onStop")
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
+
+
         Log.d(this.javaClass.simpleName, "***** fun onDestroy")
     }
 

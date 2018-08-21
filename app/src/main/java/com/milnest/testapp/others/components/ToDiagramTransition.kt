@@ -1,16 +1,14 @@
 package com.milnest.testapp.others.components
 
-import android.support.transition.ChangeBounds
-import android.support.transition.ChangeTransform
-import android.support.transition.Fade
-import android.support.transition.TransitionSet
+import android.support.transition.*
+import java.time.Duration
 
 class ToDiagramTransition : TransitionSet() {
     init {
-        setOrdering(ORDERING_TOGETHER)
-        addTransition(ChangeBounds())
+        setOrdering(ORDERING_SEQUENTIAL)
+                .addTransition(ChangeBounds())
                 .addTransition(ChangeTransform())
-                /*.addTransition(ChangeImageTransform())*/
-                .addTransition(Fade(Fade.OUT))
+                /*.addTransition(Fade())*/
+                .setDuration(3000)
     }
 }

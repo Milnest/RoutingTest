@@ -40,6 +40,10 @@ class StartPresenter : MvpPresenter<StartView>() {
                     R.id.button_start_contacts_list -> {
                         viewState.startContactActivity()
                     }
+                    R.id.button_to_anim ->{
+                        App.getRouter().navigateToWithAnimation((FragType.ANIMATION.name), null,
+                                {addSharedElement(p0, p0.transitionName)})
+                    }
                 }
             }
         }
