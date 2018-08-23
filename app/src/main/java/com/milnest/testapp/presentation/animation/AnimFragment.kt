@@ -1,20 +1,18 @@
 package com.milnest.testapp.presentation.animation
 
-import android.content.Context
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.constraint.ConstraintSet
+import android.support.design.widget.AppBarLayout
 import android.support.transition.TransitionManager
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import com.milnest.testapp.App
 import com.milnest.testapp.R
 import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
+import kotlinx.android.synthetic.main.anim_toolbar.*
 import kotlinx.android.synthetic.main.fragment_anim.*
 import kotlinx.android.synthetic.main.fragment_anim_first_state.*
 
@@ -22,7 +20,7 @@ class AnimFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainActivity).supportActionBar?.hide()
+        //(activity as MainActivity).supportActionBar?.hide()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +30,15 @@ class AnimFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
+        (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.GONE
+        (activity as MainActivity?)?.setSupportActionBar(toolbar)
+        val actBar = (activity as MainActivity).supportActionBar
+        actBar?.title = "Start"
+        actBar?.setHomeButtonEnabled(true)
+        actBar?.setDisplayHomeAsUpEnabled(true)
+        actBar?.show()
         addAnimationOperations()
+        bindViews()
     }
 
     private fun addAnimationOperations() {
@@ -47,6 +53,17 @@ class AnimFragment : BaseFragment() {
                 val constraint = if(set) constraint1 else constraint2
                 constraint.applyTo(anim_constraint_first_state)
                 set = !set
+        }
+    }
+
+    private fun bindViews() {
+        //backButton.setOnClickListener(backClickListener)
+    }
+
+    val backClickListener
+    get() = object : View.OnClickListener {
+        override fun onClick(p0: View?) {
+            App.getRouter().exit()
         }
     }
 

@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -20,33 +20,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.main.MainActivity">
+        <activity android:name=".presentation.main.MainActivity"
+            android:label="@string/title_activity_scrolling">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.contentprovider.ContentProviderActivity"
+        <activity
+            android:name=".presentation.contentprovider.ContentProviderActivity"
             android:hardwareAccelerated="false">
-
             <intent-filter android:label="Pick Contact">
                 <action android:name="android.intent.action.PICK" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="vnd.android.cursor.dir/contact"/>
-                <data android:mimeType="vnd.android.cursor.dir/person"/>
-                <data android:mimeType="vnd.android.cursor.dir/phone"/>
-                <data android:mimeType="vnd.android.cursor.dir/phone_v2"/>
-                <data android:mimeType="vnd.android.cursor.dir/postal-address"/>
-                <data android:mimeType="vnd.android.cursor.dir/postal-address_v2"/>
+
+                <data android:mimeType="vnd.android.cursor.dir/contact" />
+                <data android:mimeType="vnd.android.cursor.dir/person" />
+                <data android:mimeType="vnd.android.cursor.dir/phone" />
+                <data android:mimeType="vnd.android.cursor.dir/phone_v2" />
+                <data android:mimeType="vnd.android.cursor.dir/postal-address" />
+                <data android:mimeType="vnd.android.cursor.dir/postal-address_v2" />
             </intent-filter>
         </activity>
 
-        <receiver android:name=".others.recievers.ConnectReciever" >
+        <receiver android:name=".others.recievers.ConnectReciever">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".presentation.animation.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,9 +1,8 @@
 package com.milnest.testapp.presentation.start
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v7.app.ActionBar
 import android.view.LayoutInflater
 import android.view.View
@@ -16,25 +15,18 @@ import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
 import kotlinx.android.synthetic.main.fragment_start.*
-import android.provider.ContactsContract
-
 
 
 class StartFragment : BaseFragment(), StartView {
     @InjectPresenter
     lateinit var presenter: StartPresenter
 
-    lateinit var diagButton : Button
+    lateinit var diagButton: Button
 
     var actBar: ActionBar? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         //presenter.setFragmentManager(activity!!.supportFragmentManager)
         super.onCreate(savedInstanceState)
-        actBar = (activity as MainActivity).supportActionBar
-        actBar?.title = "Start"
-        actBar?.setHomeButtonEnabled(true)
-        actBar?.setDisplayHomeAsUpEnabled(true)
-        actBar?.show()
     }
 
     override fun startContentProviderActivity() {
@@ -57,14 +49,19 @@ class StartFragment : BaseFragment(), StartView {
 
     override fun onStart() {
         super.onStart()
+        setUpActionBar()
         bindViews()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_start, container, false)
-        //actBar.setDisplayHomeAsUpEnabled(true)       
-        return view
+    private fun setUpActionBar() {
+        //Показыват стандартный аппбар(для перехода с аним-фрагмента)
+        (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.VISIBLE
+        (activity as MainActivity?)?.setSupportActionBar(activity?.findViewById(R.id.toolbar))
+        actBar = (activity as MainActivity).supportActionBar
+        actBar?.title = "Start"
+        actBar?.setHomeButtonEnabled(true)
+        actBar?.setDisplayHomeAsUpEnabled(true)
+        actBar?.show()
     }
 
     private fun bindViews() {
@@ -75,6 +72,13 @@ class StartFragment : BaseFragment(), StartView {
         button_to_content_provider.setOnClickListener(presenter.onClickListener)
         button_start_contacts_list.setOnClickListener(presenter.onClickListener)
         button_to_anim.setOnClickListener(presenter.onClickListener)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_start, container, false)
+        //actBar.setDisplayHomeAsUpEnabled(true)       
+        return view
     }
 }
 

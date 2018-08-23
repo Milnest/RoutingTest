@@ -5,10 +5,9 @@ import java.time.Duration
 
 class ToDiagramTransition : TransitionSet() {
     init {
-        setOrdering(ORDERING_SEQUENTIAL)
+        setOrdering(ORDERING_TOGETHER)
                 .addTransition(ChangeBounds())
                 .addTransition(ChangeTransform())
-                /*.addTransition(Fade())*/
                 .setDuration(3000)
     }
 }
