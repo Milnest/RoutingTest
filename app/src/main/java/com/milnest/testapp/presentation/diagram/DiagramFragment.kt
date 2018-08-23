@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
+import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
@@ -27,10 +28,16 @@ class DiagramFragment : DiagramView, BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).supportActionBar!!.show()
+        //setUpBar(activity, getString(R.string.diagram_title), true)
+        setUpActionBar()
+    }
+
+    override fun setUpActionBar() {
+        setUpBar(activity, getString(R.string.diagram_title), true)
     }
 
     override fun getFragType(): FragType {
         return FragType.DIAGRAM
     }
+
 }

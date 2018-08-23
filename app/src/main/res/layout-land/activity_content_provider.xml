@@ -77,6 +77,15 @@
             android:layout_height="match_parent"
             android:visibility="visible"
             tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/content_provider_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="@string/content_provider_placeholder"/>
     </FrameLayout>
 
     <!-- The navigation drawer -->

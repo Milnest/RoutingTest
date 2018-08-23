@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
+import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
 
@@ -34,15 +35,17 @@ class ViewPagerFragment : BaseFragment(), ViewPagerView {
         page = layoutInflater.inflate(R.layout.page_layout, null)
         page.findViewById<TextView>(R.id.page_text).setText("PAGE 3")
         presenter.addPage(page, "3")
-
         return inflater.inflate(R.layout.fragment_view_pager, container, false)
     }
 
     override fun onStart() {
         super.onStart()
         val pager: ViewPager = view!!.findViewById(R.id.view_pager)
-        /*pager.offscreenPageLimit = 3*/
         presenter.setPagerAdapter(pager)
+    }
+
+    override fun setUpActionBar() {
+        setUpBar(activity, getString(R.string.view_pager_title), true)
     }
 
     override fun getFragType(): FragType {

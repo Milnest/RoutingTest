@@ -7,6 +7,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.App
 import com.milnest.testapp.R
 import com.milnest.testapp.others.components.DividerDecoration
+import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
 import com.milnest.testapp.tasklist.ID
@@ -32,6 +33,7 @@ class ListTaskFragment : BaseFragment(), ListTaskView {
 
     override fun onStart() {
         super.onStart()
+        setUpActionBar()
         initPresenter()
         setHasOptionsMenu(true)
     }
@@ -53,6 +55,10 @@ class ListTaskFragment : BaseFragment(), ListTaskView {
             }
             return true
         }
+    }
+
+    override fun setUpActionBar() {
+        setUpBar(activity, getString(R.string.list_task_title), true)
     }
 
     override fun getFragType(): FragType {

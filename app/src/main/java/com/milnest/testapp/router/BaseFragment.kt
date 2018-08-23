@@ -2,14 +2,20 @@ package com.milnest.testapp.router
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.arellomobile.mvp.MvpAppCompatFragment
+import com.milnest.testapp.R
 
 
 abstract class BaseFragment : MvpAppCompatFragment() {
     abstract fun getFragType(): FragType
+
+    abstract fun setUpActionBar()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

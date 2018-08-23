@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/ContentProviderTheme"
             android:name=".presentation.contentprovider.ContentProviderActivity"
             android:hardwareAccelerated="false">
             <intent-filter android:label="Pick Contact">

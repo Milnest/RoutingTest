@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
@@ -11,6 +12,7 @@ import android.view.*
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
+import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
@@ -41,16 +43,20 @@ class TaskListMainFragment : BaseFragment(), MainView {
 
     override fun onStart() {
         super.onStart()
+
+
+
+        setUpActionBar()
         bindViews()
+        presenter.onStart()
     }
 
     private fun bindViews() {
-        //val actBar = (activity as MainActivity).supportActionBar
-        //setHasOptionsMenu(true)
-        //setSupportActionBar(toolbar)
-        presenter.attachView(this)
-        presenter.setAdapter(recyclerView) //TODO: свап эту и следующую строку местами
-        recyclerView.layoutManager = LinearLayoutManager(context!!)
+        //presenter.attachView(this)
+        if (recyclerView.layoutManager == null) {
+            recyclerView.layoutManager = LinearLayoutManager(context!!)
+            presenter.setAdapter(recyclerView) //TODO: свап эту и следующую строку местами
+        }
 
         val dialogBuilder = AlertDialog.Builder(context!!) // TODO: изменено
         dialogBuilder.setTitle(getString(R.string.add_photo))
@@ -133,12 +139,18 @@ class TaskListMainFragment : BaseFragment(), MainView {
         presenter.onDestroy()
     }
 
+    override fun setUpActionBar() {
+        setUpBar(activity, getString(R.string.task_list_main_title), true)
+    }
+
     override fun showActionBar(title: Int) {
+        (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.GONE
         presenter.actionMode = (activity as MainActivity).startSupportActionMode(presenter.onActionModeListener)
         presenter.actionMode?.title = getString(title)
     }
 
     override fun closeActionBar() {
+        (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.VISIBLE
         finishActionMode()
     }
 

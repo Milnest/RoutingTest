@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="sword img here"
-        android:background="@drawable/suigintou_sword" />
+        android:background="@drawable/suigintou_sword"
+        android:transitionName="@string/diag_trans_button"/>
 
     <TextView
         android:id="@+id/anim_text"

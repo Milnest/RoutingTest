@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.milnest.testapp.R
+import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
 //import kotlinx.android.synthetic.main.fragment_text_task.*
@@ -28,9 +29,14 @@ class TextTaskFragment : BaseFragment(), TextTaskView {
 
     override fun onStart() {
         super.onStart()
+        setUpActionBar()
         title = view?.findViewById<EditText>(R.id.taskTitle)
         text = view?.findViewById<EditText>(R.id.taskText)
         setHasOptionsMenu(true)
+    }
+
+    override fun setUpActionBar() {
+        setUpBar(activity, getString(R.string.text_task_title), true)
     }
 
     override fun onResume() {

@@ -6,10 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.support.v7.view.ActionMode
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
+import android.support.v7.widget.*
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,10 +14,10 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
 import com.milnest.testapp.R
+import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.FragType
 import com.milnest.testapp.tasklist.CAMERA_RESULT
 import com.milnest.testapp.tasklist.GALLERY_RESULT
-import com.milnest.testapp.tasklist.data.repository.DBRepository
 import com.milnest.testapp.tasklist.entities.ResultOfActivity
 import com.milnest.testapp.tasklist.entities.Task
 import com.milnest.testapp.tasklist.other.utils.ImgUtil
@@ -33,7 +30,7 @@ import java.io.File
 class MainPresenter : MvpPresenter<MainView>(){
     var adapter = ItemsAdapter(onItemClickListener)
     var adapterGrid = ItemsAdapterGrid(onItemClickListener)
-    var curAdapterType: Int = GRID_TYPE
+    var curAdapterType: Int = LINEAR_TYPE
     private lateinit var photoFile: File
     var curPosDelete = -1
 
@@ -173,6 +170,10 @@ class MainPresenter : MvpPresenter<MainView>(){
         detachGridRecyclerManager(gridLayoutManager)*/
     }
 
+    fun onStart() {
+        adaptersUpdateData()
+    }
+
 //    private fun detachLinearRecyclerManager(layoutManager: LinearLayoutManager) {
 //        recyclerView?.Recycler()?.let { linearLayoutManager.detachAndScrapAttachedViews(it) }
 //    }
@@ -226,6 +227,7 @@ class MainPresenter : MvpPresenter<MainView>(){
     val onActionModeListener: ActionMode.Callback
         get() = object : ActionMode.Callback {
             override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                val ac: MainActivity = MainActivity()
                 val inflater = mode.menuInflater
                 inflater.inflate(R.menu.task_list_menu_context_task, menu)
                 return true
@@ -243,6 +245,7 @@ class MainPresenter : MvpPresenter<MainView>(){
             }
 
             override fun onDestroyActionMode(mode: ActionMode) {
+                viewState.closeActionBar()
                 adaptersRemoveSelection()
             }
         }

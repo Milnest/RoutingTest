@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
@@ -30,7 +31,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_content_provider.*
 
-
 class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     @InjectPresenter
@@ -43,13 +43,13 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         Log.d(this.javaClass.simpleName, "***** fun onCreate")
         setContentView(R.layout.activity_content_provider)
         bindViews()
+        showPlaceholder()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (drawer_layout.isDrawerOpen(nav_view_left) || drawer_layout.isDrawerOpen(nav_view_right)) {
             drawer_layout.closeDrawers()
-        }
-        else {
+        } else {
             if (bar.onOptionsItemSelected(item)) return true
         }
         return super.onOptionsItemSelected(item)
@@ -63,7 +63,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         button_show_contacts.setOnClickListener(presenter.showButtonListener)
     }
 
-    fun setUpDrawerBar(){
+    fun setUpDrawerBar() {
         bar = ActionBarDrawerToggle(this, drawer_layout, R.string.drawer_open, R.string.drawer_close)
         drawer_layout.addDrawerListener(bar)
         bar.syncState()
@@ -83,7 +83,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         Log.d(this.javaClass.simpleName, "***** fun onResume")
     }
 
-    fun fillRecycler(){
+    fun fillRecycler() {
         recyclerViewContactsShort.adapter = presenter.getContactsAdapter()
         recyclerViewContactsShort.addItemDecoration(DividerDecoration(App.context, R.drawable.divider, 0))
         recyclerViewContactsShort.layoutManager = LinearLayoutManager(App.context)
@@ -92,6 +92,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         recyclerViewEventsShort.addItemDecoration(DividerDecoration(App.context, R.drawable.divider, 0))
         recyclerViewEventsShort.layoutManager = LinearLayoutManager(App.context)
     }
+
     override fun showInfo(info: ContactLongInfo) {
         //TODO: в презентер, как setUpImages
         /***************/
@@ -110,8 +111,7 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
                     .map { bitmap -> BitmapDrawable(App.context.resources, bitmap) }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { drawable -> photoCenter.setImageDrawable(drawable)/*contactInfoPhotoImg.background = drawable*/ }
-        }
-        else{
+        } else {
             Picasso.get().load(R.drawable.blank)/*.fit().centerInside()*/.transform(ContactPlaceholderTransformation(0, info.id, info.photo.content, info.color)).into(contactInfoPhotoImg)
             Observable.just(R.drawable.blank)
                     .subscribeOn(Schedulers.io())
@@ -131,16 +131,15 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         recyclerViewContactInfo.adapter = adapter
         recyclerViewContactInfo.layoutManager = LinearLayoutManager(App.context)
         drawer_layout.closeDrawers()
-        if(intent.action == Intent.ACTION_PICK){
+        if (intent.action == Intent.ACTION_PICK) {
             button_accept.visibility = View.VISIBLE
         }
     }
 
     override fun interactProgressBar(show: Boolean) {
-        if (show){
+        if (show) {
             progressBar.visibility = ProgressBar.VISIBLE
-        }
-        else{
+        } else {
             progressBar.visibility = ProgressBar.GONE
         }
     }
@@ -152,12 +151,27 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         setLockContactsDrawer(true)
     }
 
-    fun setLockContactsDrawer(isLock: Boolean){
+    fun setLockContactsDrawer(isLock: Boolean) {
         if (isLock)
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, nav_view_right)
         else
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, nav_view_right)
     }
+
+    /*override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        if (outState != null) {
+            presenter.onSaveInstanceState(outState, content_provider_placeholder.visibility)
+        }
+    }*/
+
+    /*override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if (savedInstanceState != null)
+            content_provider_placeholder.visibility = savedInstanceState.getInt(presenter.savedPlaceholderStateKey)
+        else
+            content_provider_placeholder.visibility = View.GONE
+    }*/
 
     override fun hideEvents() {
         recyclerViewEventsShort.visibility = View.GONE
@@ -183,6 +197,14 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
         recyclerViewContactsShort.scrollToPosition(position)
     }
 
+    override fun showPlaceholder() {
+        content_provider_placeholder.visibility = View.VISIBLE
+    }
+
+    override fun hidePlaceholder() {
+        content_provider_placeholder.visibility = View.GONE
+    }
+
     override fun onPause() {
         super.onPause()
         Log.d(this.javaClass.simpleName, "***** fun onPause")
@@ -196,9 +218,6 @@ class ContentProviderActivity : ContentProviderView, MvpAppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-
-
         Log.d(this.javaClass.simpleName, "***** fun onDestroy")
     }
 

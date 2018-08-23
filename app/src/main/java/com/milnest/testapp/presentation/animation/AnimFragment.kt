@@ -1,6 +1,7 @@
 package com.milnest.testapp.presentation.animation
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.constraint.ConstraintSet
 import android.support.design.widget.AppBarLayout
 import android.support.transition.TransitionManager
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.milnest.testapp.App
 import com.milnest.testapp.R
+import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
@@ -31,14 +33,18 @@ class AnimFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.GONE
-        (activity as MainActivity?)?.setSupportActionBar(toolbar)
-        val actBar = (activity as MainActivity).supportActionBar
+       // (activity as MainActivity?)?.setSupportActionBar(toolbar)
+        /*val actBar = (activity as MainActivity).supportActionBar
         actBar?.title = "Start"
         actBar?.setHomeButtonEnabled(true)
         actBar?.setDisplayHomeAsUpEnabled(true)
-        actBar?.show()
+        actBar?.show()*/
+        setUpActionBar()
         addAnimationOperations()
         bindViews()
+        Handler().postDelayed({
+            anim_floating_button.visibility = View.VISIBLE
+        }, 3000)
     }
 
     private fun addAnimationOperations() {
@@ -60,11 +66,15 @@ class AnimFragment : BaseFragment() {
         //backButton.setOnClickListener(backClickListener)
     }
 
-    val backClickListener
+    /*val backClickListener
     get() = object : View.OnClickListener {
         override fun onClick(p0: View?) {
             App.getRouter().exit()
         }
+    }*/
+
+    override fun setUpActionBar() {
+        setUpBar(activity, getString(R.string.animation_title), true, toolbar)
     }
 
     override fun getFragType(): FragType {

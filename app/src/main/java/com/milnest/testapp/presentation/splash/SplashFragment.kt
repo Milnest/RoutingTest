@@ -34,4 +34,6 @@ class SplashFragment : SplashView, BaseFragment() {
         //(activity as MainActivity).supportActionBar!!.hide()
         presenter.show(1000L)
     }
+
+    override fun setUpActionBar() {}
 }

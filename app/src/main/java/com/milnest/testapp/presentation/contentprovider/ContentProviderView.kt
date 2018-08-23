@@ -2,6 +2,7 @@ package com.milnest.testapp.presentation.contentprovider
 
 import android.content.Intent
 import com.arellomobile.mvp.MvpView
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.milnest.testapp.entities.ContactLongInfo
 
 interface ContentProviderView : MvpView {
@@ -15,4 +16,6 @@ interface ContentProviderView : MvpView {
     fun showContacts()
     fun hideContacts()
     fun scrollToLast(position: Int)
+    fun showPlaceholder()
+    fun hidePlaceholder()
 }

@@ -8,17 +8,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.diagram.DiagramFragment">
 
-   <!-- <Button
-        android:id="@+id/button_on_diag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/to_diag"
-        android:transitionName="@string/diag_trans_button"
-        android:layout_gravity="center"
-        android:alpha="0"
-        />-->
-
     <com.milnest.testapp.customview.CircleDiagramView
         android:id="@+id/diagram"
         android:layout_height="match_parent"
@@ -33,8 +22,7 @@
         app:cd_line_color="@color/colorBrown_200"
         app:cd_text_color="@color/colorBlack"
         app:cd_text_size="40sp"
-        app:cd_h= "15dp"
-        android:transitionName="@string/diag_trans_button"/>
+        app:cd_h= "15dp"/>
 </FrameLayout>
 
     <!--

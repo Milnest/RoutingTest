@@ -3,6 +3,7 @@ package com.milnest.testapp.presentation.contentprovider
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.support.v4.widget.DrawerLayout
@@ -19,12 +20,17 @@ import com.milnest.testapp.tasklist.presentation.main.IClickListener
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_content_provider.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 @InjectViewState
 class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
+
+    val savedPlaceholderStateKey = "savedPlaceholderStateKey"
+    var savedPlaceholderState = View.GONE
+
     var adapter: ContactsAdapter? = null
     var eventsAdapter: EventsAdapter? = null
 
@@ -132,6 +138,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     val showButtonListener
     get() = object : View.OnClickListener {
         override fun onClick(view: View) {
+//            viewState.hidePlaceholder()
             when(view.id){
                 R.id.button_show_events -> {
                     viewState.hideContacts()
@@ -160,8 +167,9 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
         }
 
         override fun onDrawerOpened(drawerView: View) {
-            if (drawerView.id == R.id.nav_view_right)
+            if (drawerView.id == R.id.nav_view_right) {
                 viewState.scrollToLast(lastPosition)
+            }
         }
 
     }
@@ -204,6 +212,7 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
             emailCursor.close()
             cursor.close()
         }
+        viewState.hidePlaceholder()
         return contactLongInfo
     }
 
@@ -306,11 +315,16 @@ class ContentProviderPresenter : MvpPresenter<ContentProviderView>() {
     }
 
     fun onStart() {
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this)
+        //viewState.showPlaceholder()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoaderShowEvent(event: LoaderShowEvent) {
         viewState.interactProgressBar(event.progressBarState)
     }
+
+    /*fun onSaveInstanceState(outState: Bundle, placeholderVisibility: Int) {
+        outState.putInt(savedPlaceholderStateKey, placeholderVisibility)
+    }*/
 }
