@@ -8,8 +8,8 @@ import android.support.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.milnest.testapp.App
 import com.milnest.testapp.R
+import com.milnest.testapp.others.components.ToAnimationScreenTransition
 import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.BaseFragment
@@ -20,11 +20,6 @@ import kotlinx.android.synthetic.main.fragment_anim_first_state.*
 
 class AnimFragment : BaseFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //(activity as MainActivity).supportActionBar?.hide()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_anim, container, false)
@@ -32,19 +27,17 @@ class AnimFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
+
+
+
+
         (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.GONE
-       // (activity as MainActivity?)?.setSupportActionBar(toolbar)
-        /*val actBar = (activity as MainActivity).supportActionBar
-        actBar?.title = "Start"
-        actBar?.setHomeButtonEnabled(true)
-        actBar?.setDisplayHomeAsUpEnabled(true)
-        actBar?.show()*/
         setUpActionBar()
         addAnimationOperations()
-        bindViews()
+        //Показать floating_button  в то же время, когда закончится анимация всплытия
         Handler().postDelayed({
             anim_floating_button.visibility = View.VISIBLE
-        }, 3000)
+        }, ToAnimationScreenTransition.transitionDuration)
     }
 
     private fun addAnimationOperations() {
@@ -61,17 +54,6 @@ class AnimFragment : BaseFragment() {
                 set = !set
         }
     }
-
-    private fun bindViews() {
-        //backButton.setOnClickListener(backClickListener)
-    }
-
-    /*val backClickListener
-    get() = object : View.OnClickListener {
-        override fun onClick(p0: View?) {
-            App.getRouter().exit()
-        }
-    }*/
 
     override fun setUpActionBar() {
         setUpBar(activity, getString(R.string.animation_title), true, toolbar)
