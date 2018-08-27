@@ -1,61 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/startFragment"
-    android:orientation="vertical"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.start.StartFragment">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_to_diag"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/startFragment"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/to_diag"
-        android:alpha="1" />
+        tools:context=".presentation.start.StartFragment">
 
-    <Button
-        android:id="@+id/button_to_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/to_view_pager"/>
+        <Button
+            android:id="@+id/button_to_diag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/to_diag"
+            android:alpha="1" />
 
-    <Button
-        android:id="@+id/button_to_task_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/to_task_list"/>
+        <Button
+            android:id="@+id/button_to_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/to_view_pager"/>
 
-    <Button
-        android:id="@+id/button_to_demo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/change_repo"/>
+        <Button
+            android:id="@+id/button_to_task_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/to_task_list"/>
 
-    <Button
-        android:id="@+id/button_to_content_provider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/to_content_provider"/>
+        <Button
+            android:id="@+id/button_to_demo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/change_repo"/>
 
-    <Button
-        android:id="@+id/button_start_contacts_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Открыть_контакт"/>
+        <Button
+            android:id="@+id/button_to_content_provider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/to_content_provider"/>
 
-    <Button
-        android:id="@+id/button_to_anim"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Показать анимашку"
-        android:transitionName="@string/diag_trans_button" />
+        <Button
+            android:id="@+id/button_start_contacts_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/open_contact_button_text"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button_to_anim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/show_animation_button_text"
+            android:transitionName="@string/diag_trans_button" />
+
+        <Button
+            android:id="@+id/button_to_webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/go_to_webview_button_text" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

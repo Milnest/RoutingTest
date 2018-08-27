@@ -55,12 +55,6 @@ class StartFragment : BaseFragment(), StartView {
         bindViews()
     }
 
-    /*private fun setUpActionBar() {
-        //Показыват стандартный аппбар(для перехода с аним-фрагмента)
-        (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.VISIBLE
-        setUpBar(activity, getString(R.string.start_title), true)
-    }*/
-
     override fun setUpActionBar() {
         //Показыват стандартный аппбар(для перехода с аним-фрагмента)
         (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.VISIBLE
@@ -75,6 +69,7 @@ class StartFragment : BaseFragment(), StartView {
         button_to_content_provider.setOnClickListener(presenter.onClickListener)
         button_start_contacts_list.setOnClickListener(presenter.onClickListener)
         button_to_anim.setOnClickListener(presenter.onClickListener)
+        button_to_webview.setOnClickListener(presenter.onClickListener)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

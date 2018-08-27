@@ -43,6 +43,9 @@ class StartPresenter : MvpPresenter<StartView>() {
                         App.getRouter().navigateToWithAnimation((FragType.ANIMATION.name), null,
                                 {addSharedElement(p0, p0.transitionName)})
                     }
+                    R.id.button_to_webview ->{
+                        App.getRouter().navigateTo(FragType.WEB_VIEW.name)
+                    }
                 }
             }
         }
