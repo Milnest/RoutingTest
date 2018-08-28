@@ -5,9 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".presentation.lessonswebviewer.LessonsWebViewerFragment">
 
-    <WebView
+    <!--<WebView
         android:id="@+id/lessons_web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lessons_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

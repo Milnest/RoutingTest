@@ -1,7 +1,9 @@
 package com.milnest.testapp.presentation.lessonswebviewer
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import com.milnest.testapp.router.FragType
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_lessons_web_viewer.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
@@ -30,11 +33,20 @@ class LessonsWebViewerFragment : BaseFragment(), LessonWebViewerView {
 
     override fun onStart() {
         super.onStart()
+
+
+
+
         /*val webSettings = lessons_web_view.getSettings()
         webSettings.setJavaScriptEnabled(true)
         lessons_web_view.loadUrl("https://startandroid.ru/ru/uroki/vse-uroki-spiskom.html")*/
         //lessons_web_view.addJavascriptInterface(JavaScriptInterface(context!!), "AndroidFunction")
         presenter.loadLessonsList()
+    }
+
+    override fun fillLessonsList(lessonsAdapter: LessonsAdapter) {
+        lessons_recycler_view.adapter = lessonsAdapter
+        lessons_recycler_view.layoutManager = LinearLayoutManager(context)
     }
 
     override fun getFragType(): FragType {
