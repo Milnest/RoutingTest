@@ -10,4 +10,6 @@ interface StartView : MvpView {
     @StateStrategyType(SkipStrategy::class)
     fun startContentProviderActivity()
     fun startContactActivity()
+    fun showInfo(color: Int)
+    fun showAngles(angles: String)
 }

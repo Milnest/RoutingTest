@@ -33,10 +33,6 @@ class LessonsWebViewerFragment : BaseFragment(), LessonWebViewerView {
 
     override fun onStart() {
         super.onStart()
-
-
-
-
         /*val webSettings = lessons_web_view.getSettings()
         webSettings.setJavaScriptEnabled(true)
         lessons_web_view.loadUrl("https://startandroid.ru/ru/uroki/vse-uroki-spiskom.html")*/

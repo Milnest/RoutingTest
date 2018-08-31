@@ -1,10 +1,10 @@
 package com.milnest.testapp.presentation.start
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +20,10 @@ import kotlinx.android.synthetic.main.fragment_start.*
 
 
 class StartFragment : BaseFragment(), StartView {
+    override fun showAngles(angles: String) {
+        coords.text = angles
+    }
+
     @InjectPresenter
     lateinit var presenter: StartPresenter
 
@@ -53,12 +57,38 @@ class StartFragment : BaseFragment(), StartView {
         super.onStart()
         setUpActionBar()
         bindViews()
+        presenter.setUpSensorManager()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.startSensorManager()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.stopSensorManager()
     }
 
     override fun setUpActionBar() {
         //Показыват стандартный аппбар(для перехода с аним-фрагмента)
         (activity as MainActivity?)?.findViewById<AppBarLayout>(R.id.start_appbar)?.visibility = View.VISIBLE
         setUpBar(activity, getString(R.string.start_title), true)
+    }
+
+    override fun showInfo(color: Int) {
+        /*var res = ""
+        for (value in valuesResult) {
+            res = res + value.toString() + "///"
+        }
+        coords.text = res
+        when(valuesResult[1]){
+            90f ->{
+                startFragment.setBackgroundColor(resources.getColor(R.color.colorBrown_200))
+            }
+        }*/
+        //startFragment.setBackgroundColor(color)
+        startFragmentRoot.setBackgroundColor(color)
     }
 
     private fun bindViews() {
