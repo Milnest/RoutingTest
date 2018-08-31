@@ -55,12 +55,6 @@ class StartFragment : BaseFragment(), StartView {
 
     override fun onStart() {
         super.onStart()
-
-
-
-
-
-
         setUpActionBar()
         bindViews()
         presenter.setUpSensorManager()

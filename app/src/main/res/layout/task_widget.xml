@@ -3,15 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorDarkGreen"
+    >
     <TextView
         android:id="@+id/widgetTitle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#6600ff00"
         android:gravity="center"
-        android:textColor="#000"
+        android:textColor="@color/colorGray_900"
         android:textSize="18sp">
     </TextView>
     <TextView
@@ -19,9 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#6600ff00"
         android:gravity="center"
-        android:textColor="#000"
+        android:textColor="@color/colorBlueGray_500"
         android:textSize="18sp">
     </TextView>
 </LinearLayout>

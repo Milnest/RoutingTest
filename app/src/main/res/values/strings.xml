@@ -158,4 +158,6 @@
     <string name="web_view_title">Web Viewer</string>
     <string name="start_android_lessons_page">https://startandroid.ru/ru/uroki/vse-uroki-spiskom.html</string>
     <string name="start_android_main_page">https://startandroid.ru</string>
+    <string name="your_task_title">Ваша задача:</string>
+    <string name="no_tasks">No tasks</string>
 </resources>

@@ -14,6 +14,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.milnest.testapp.App
 import com.milnest.testapp.R
+import com.milnest.testapp.others.eventbus.TaskUpdatedEvent
 import com.milnest.testapp.presentation.main.MainActivity
 import com.milnest.testapp.router.FragType
 import com.milnest.testapp.tasklist.CAMERA_RESULT
@@ -24,6 +25,7 @@ import com.milnest.testapp.tasklist.other.utils.ImgUtil
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 @InjectViewState
@@ -60,6 +62,7 @@ class MainPresenter : MvpPresenter<MainView>(){
             adaptersUpdateData()
 //            detachGridRecyclerManager(gridLayoutManager)
         }
+        EventBus.getDefault().post(TaskUpdatedEvent(true))
     }
 
     private fun notifToActivity(toShow: Int) {
