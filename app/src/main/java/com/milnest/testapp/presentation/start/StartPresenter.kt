@@ -184,6 +184,9 @@ class StartPresenter : MvpPresenter<StartView>() {
                     R.id.button_to_webview -> {
                         App.getRouter().navigateTo(FragType.WEB_VIEW.name)
                     }
+                    R.id.button_to_picker ->{
+                        App.getRouter().navigateTo(FragType.DATE_TIME_PICKER.name)
+                    }
                 }
             }
         }

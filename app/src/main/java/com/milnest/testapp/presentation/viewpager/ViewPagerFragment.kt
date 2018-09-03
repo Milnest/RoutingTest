@@ -11,6 +11,8 @@ import com.milnest.testapp.R
 import com.milnest.testapp.others.utils.setUpBar
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
+import kotlinx.android.synthetic.main.fragment_view_pager.*
+import kotlinx.android.synthetic.main.page_layout.view.*
 
 class ViewPagerFragment : BaseFragment(), ViewPagerView {
 
@@ -41,6 +43,7 @@ class ViewPagerFragment : BaseFragment(), ViewPagerView {
     override fun onStart() {
         super.onStart()
         val pager: ViewPager = view!!.findViewById(R.id.view_pager)
+        tab_layout_dots.setupWithViewPager(pager)
         presenter.setPagerAdapter(pager)
     }
 

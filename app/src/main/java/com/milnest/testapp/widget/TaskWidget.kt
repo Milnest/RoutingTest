@@ -15,7 +15,6 @@ import com.milnest.testapp.others.eventbus.TaskUpdatedEvent
 import com.milnest.testapp.tasklist.data.db.TaskDatabaseHelper
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 

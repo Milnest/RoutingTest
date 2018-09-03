@@ -160,4 +160,8 @@
     <string name="start_android_main_page">https://startandroid.ru</string>
     <string name="your_task_title">Ваша задача:</string>
     <string name="no_tasks">No tasks</string>
+    <string name="date_time_picker_title">Picker</string>
+    <string name="set_date_button">Установить дату</string>
+    <string name="set_time_button">Установить время</string>
+    <string name="button_to_datetime_picker">Перейти к пикеру</string>
 </resources>

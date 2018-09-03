@@ -48,7 +48,8 @@ class MainPresenter : MvpPresenter<MainView>(){
         recyclerView = itemsView
         if (curAdapterType == LINEAR_TYPE) {
             itemsView.adapter = adapterGrid
-            itemsView.layoutManager = GridLayoutManager(App.context, 2)/*gridLayoutManager*/
+            //itemsView.layoutManager = GridLayoutManager(App.context, 2)
+            itemsView.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
             curAdapterType = GRID_TYPE
             viewState.setSplitIcon(R.drawable.ic_linear_split)
             adaptersUpdateData()

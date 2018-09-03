@@ -1,7 +1,6 @@
 package com.milnest.testapp.presentation.start
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.ActionBar
@@ -20,19 +19,14 @@ import kotlinx.android.synthetic.main.fragment_start.*
 
 
 class StartFragment : BaseFragment(), StartView {
-    override fun showAngles(angles: String) {
-        coords.text = angles
-    }
 
     @InjectPresenter
     lateinit var presenter: StartPresenter
 
-    lateinit var diagButton: Button
-
     var actBar: ActionBar? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        //presenter.setFragmentManager(activity!!.supportFragmentManager)
-        super.onCreate(savedInstanceState)
+
+    override fun showAngles(angles: String) {
+        //coords.text = angles
     }
 
     override fun startContentProviderActivity() {
@@ -40,12 +34,9 @@ class StartFragment : BaseFragment(), StartView {
     }
 
     override fun startContactActivity() {
-        /*val pickIntent = Intent(Intent.ACTION_VIEW)*/
         val pickIntent = Intent(Intent.ACTION_PICK)
-        pickIntent.type = "vnd.android.cursor.dir/contact"/*ContactsContract.Contacts.CONTENT_ITEM_TYPE*//*ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE*/
-        //pickIntent.data = Uri.parse("content://contacts/people/")
+        pickIntent.type = "vnd.android.cursor.dir/contact"
         val chooser = Intent.createChooser(pickIntent, "TITLE")
-        //startActivityForResult(pickIntent, 1)
         startActivityForResult(chooser, 1)
     }
 
@@ -77,18 +68,7 @@ class StartFragment : BaseFragment(), StartView {
     }
 
     override fun showInfo(color: Int) {
-        /*var res = ""
-        for (value in valuesResult) {
-            res = res + value.toString() + "///"
-        }
-        coords.text = res
-        when(valuesResult[1]){
-            90f ->{
-                startFragment.setBackgroundColor(resources.getColor(R.color.colorBrown_200))
-            }
-        }*/
-        //startFragment.setBackgroundColor(color)
-        startFragmentRoot.setBackgroundColor(color)
+        //startFragmentRoot.setBackgroundColor(color)
     }
 
     private fun bindViews() {
@@ -100,12 +80,13 @@ class StartFragment : BaseFragment(), StartView {
         button_start_contacts_list.setOnClickListener(presenter.onClickListener)
         button_to_anim.setOnClickListener(presenter.onClickListener)
         button_to_webview.setOnClickListener(presenter.onClickListener)
+        button_to_picker.setOnClickListener(presenter.onClickListener)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_start, container, false)
-        //actBar.setDisplayHomeAsUpEnabled(true)       
+        //actBar.setDisplayHomeAsUpEnabled(true)
         return view
     }
 }
