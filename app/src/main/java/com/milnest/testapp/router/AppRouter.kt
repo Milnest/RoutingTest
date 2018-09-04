@@ -5,6 +5,7 @@ import com.milnest.testapp.presentation.animation.AnimFragment
 import com.milnest.testapp.presentation.diagram.DiagramFragment
 import com.milnest.testapp.presentation.lessonswebviewer.LessonsWebViewerFragment
 import com.milnest.testapp.presentation.datetimepicker.DateTimePickerFragment
+import com.milnest.testapp.presentation.maps.MapsFragment
 import com.milnest.testapp.presentation.splash.SplashFragment
 import com.milnest.testapp.presentation.start.StartFragment
 import com.milnest.testapp.presentation.viewpager.ViewPagerFragment
@@ -22,7 +23,8 @@ enum class FragType(name: String) {
     TASK_LIST_TEXT(name = "task_list_text"),
     ANIMATION(name = "animation"),
     WEB_VIEW(name = "web_view"),
-    DATE_TIME_PICKER(name = "date_time_picker");
+    DATE_TIME_PICKER(name = "date_time_picker"),
+    MAP(name = "map");
 
     fun createFragment(data: Bundle): BaseFragment = when (this) {
         SPLASH -> SplashFragment()
@@ -35,6 +37,7 @@ enum class FragType(name: String) {
         ANIMATION -> AnimFragment()
         WEB_VIEW -> LessonsWebViewerFragment()
         DATE_TIME_PICKER -> DateTimePickerFragment()
+        MAP -> MapsFragment()
     }
 }
 

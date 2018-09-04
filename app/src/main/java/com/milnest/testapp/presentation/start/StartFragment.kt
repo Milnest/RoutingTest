@@ -81,6 +81,7 @@ class StartFragment : BaseFragment(), StartView {
         button_to_anim.setOnClickListener(presenter.onClickListener)
         button_to_webview.setOnClickListener(presenter.onClickListener)
         button_to_picker.setOnClickListener(presenter.onClickListener)
+        button_to_map.setOnClickListener(presenter.onClickListener)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

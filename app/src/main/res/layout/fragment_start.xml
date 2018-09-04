@@ -78,6 +78,13 @@
             android:textSize="20sp"
             android:text="@string/button_to_datetime_picker"/>
 
+        <Button
+            android:id="@+id/button_to_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/button_to_map_text"/>
+
         <TextView
             android:id="@+id/coords"
             android:layout_width="match_parent"
