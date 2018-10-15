@@ -190,6 +190,9 @@ class StartPresenter : MvpPresenter<StartView>() {
                     R.id.button_to_map ->{
                         App.getRouter().navigateTo(FragType.MAP.name)
                     }
+                    R.id.button_to_camera->{
+                        App.getRouter().navigateTo(FragType.CAMERA.name)
+                    }
                 }
             }
         }

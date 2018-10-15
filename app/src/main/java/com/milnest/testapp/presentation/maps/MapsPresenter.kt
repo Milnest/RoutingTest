@@ -13,19 +13,31 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.support.v4.content.ContextCompat
+import android.util.Log
+import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.JointType
+//import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.DirectionsApi
+import com.google.maps.GeoApiContext
+import com.google.maps.PendingResult
+import com.google.maps.model.DirectionsResult
+import com.google.maps.model.LatLng
 import com.milnest.testapp.App
+import com.milnest.testapp.R
 import com.milnest.testapp.presentation.maps.MapsFragment.Companion.MY_PERMISSIONS_REQUEST_LOCATION
 
 
 @InjectViewState
 class MapsPresenter : MvpPresenter<MapsView>() {
     private var googleMap: GoogleMap? = null
+    private val apiKey = "AIzaSyD40p1SCzKq1WY7Do-pcQITacWOYp1Qqe0"
+    private val coordsList: MutableList<LatLng> = ArrayList()
     val locationManager = App.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val providers = locationManager.getProviders(true)
 
@@ -37,9 +49,9 @@ class MapsPresenter : MvpPresenter<MapsView>() {
             if (isOlderMarshmallow())
                 checkLocationPermission()
             else {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1f, locationListener)
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1f, locationListener)
-                addMarker()
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1f, locationListener)
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 1f, locationListener)
+                addMyLocationMarker()
             }
     }
 
@@ -57,20 +69,45 @@ class MapsPresenter : MvpPresenter<MapsView>() {
                 MapsFragment.GEOLOCATION_SETTINGS_CODE)
     }
 
-    private fun addMarker() {
+    private fun addMyLocationMarker() {
         if (ContextCompat.checkSelfPermission(App.context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED)
             googleMap?.isMyLocationEnabled = true
-        val location = getLastKnownLocation()
-        location?.let { val latitude = location.latitude
-            val longitude = location.longitude
-            val marker = googleMap?.addMarker(MarkerOptions().position(LatLng(latitude, longitude)))
-            marker?.title = "Вы здесь"
-            marker?.snippet = "широта: $latitude\nдолгота: $longitude"
-            marker?.isDraggable = true
-            marker?.isFlat = true
-            marker?.showInfoWindow()
+        val location = getCurrentLocation()
+        location?.let {
+            val marker = googleMap?.addMarker(MarkerOptions().position(com.google.android.gms.maps.model.LatLng(location.lat, location.lng)))
+            marker?.let {
+                marker.title = "Вы были здесь"
+                marker.snippet = "широта: ${location.lat}\nдолгота: ${location.lng}"
+                marker.isDraggable = true
+                marker.isFlat = true
+                marker.showInfoWindow()
+            }
         }
+    }
+
+    private fun addLocationMarker(location: LatLng) {
+        if (ContextCompat.checkSelfPermission(App.context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+            googleMap?.isMyLocationEnabled = true
+        val marker = googleMap?.addMarker(MarkerOptions().position(com.google.android.gms.maps.model.LatLng(location.lat, location.lng)))
+        marker?.let {
+            marker.title = "Вы были здесь"
+            marker.snippet = "широта: ${location.lat}\nдолгота: ${location.lng}"
+            marker.isDraggable = true
+            marker.isFlat = true
+            marker.showInfoWindow()
+        }
+    }
+
+    private fun getCurrentLocation(): com.google.maps.model.LatLng? {
+        val location = getLastKnownLocation()
+        location?.let {
+            val latitude = location.latitude
+            val longitude = location.longitude
+            return LatLng(latitude, longitude)
+        }
+        return null
     }
 
     @SuppressLint("MissingPermission")
@@ -95,7 +132,7 @@ class MapsPresenter : MvpPresenter<MapsView>() {
 
                     if (ContextCompat.checkSelfPermission(App.context, Manifest.permission.ACCESS_FINE_LOCATION) ==
                             PackageManager.PERMISSION_GRANTED) {
-                        addMarker()
+                        addMyLocationMarker()
                     }
                     //Request location updates:
                     //locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1f, )
@@ -122,15 +159,14 @@ class MapsPresenter : MvpPresenter<MapsView>() {
             if (!gpsIsOff()) {
                 if (isOlderMarshmallow())
                     checkLocationPermission()
-                else
-                {
-                    addMarker()
+                else {
+                    addMyLocationMarker()
                     /*val locationRequest = LocationRequest.create()
                     locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                     locationRequest.setInterval(500)
                     locationRequest.setFastestInterval(100)*/
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0f, locationListener)
-                }//addMarker()
+                }//addMyLocationMarker()
             } else
                 viewState.showMessage("Определение местоположения невозможно")
         }
@@ -145,22 +181,50 @@ class MapsPresenter : MvpPresenter<MapsView>() {
             }
         }
     val locationListener
-    get() = object : LocationListener {
-        override fun onLocationChanged(location: Location?) {
-            addMarker()
-            viewState.showMessage("go")
-        }
-        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
-        override fun onProviderEnabled(p0: String?) {}
-        override fun onProviderDisabled(p0: String?) {}
-
-    }
-    /*val locationListener
         get() = object : LocationListener {
             override fun onLocationChanged(location: Location?) {
-                addMarker()
-                viewState.showMessage("go")
-
+                addMyLocationMarker()
+                getCurrentLocation()?.let { coordsList.add(it) }
+                //viewState.showMessage("go")
             }
-        }*/
+
+            override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
+            override fun onProviderEnabled(p0: String?) {}
+            override fun onProviderDisabled(p0: String?) {}
+        }
+
+    val stopTrackingButtonListener: View.OnClickListener
+        get() = object : View.OnClickListener {
+            override fun onClick(view: View?) {
+//                addLocationMarker(LatLng(55.754724, 37.621380))
+//                addLocationMarker(LatLng(55.760133, 37.618697))
+//                addLocationMarker(LatLng(55.764753, 37.591313))
+//                addLocationMarker(LatLng(55.728466, 37.604155))
+//                coordsList.clear()
+//                coordsList.add(LatLng(55.754724, 37.621380))
+//                coordsList.add(LatLng(55.760133, 37.618697))
+//                coordsList.add(LatLng(55.764753, 37.591313))
+//                coordsList.add(LatLng(55.728466, 37.604155))
+                getLineOnMap(coordsList)
+            }
+
+        }
+
+    private fun getLineOnMap(coordList: MutableList<LatLng>) {
+        val line = PolylineOptions()
+        val latLngBuilder = LatLngBounds.Builder()
+
+        //Проходимся по всем точкам, добавляем их в Polyline и в LanLngBounds.Builder
+        for (i in coordList.indices) {
+            line.add(com.google.android.gms.maps.model.LatLng(coordList[i].lat, coordList[i].lng))
+            latLngBuilder.include(com.google.android.gms.maps.model.LatLng(coordList[i].lat, coordList[i].lng))
+        }
+
+        //Делаем линию более менее симпатичное
+        line.width(16f).color(R.color.colorPrimary)
+        line.jointType(JointType.ROUND)
+
+        //Добавляем линию на карту
+        googleMap?.addPolyline(line)
+    }
 }

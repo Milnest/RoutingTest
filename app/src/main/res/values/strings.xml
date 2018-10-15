@@ -165,4 +165,6 @@
     <string name="set_time_button">Установить время</string>
     <string name="button_to_datetime_picker">Перейти к пикеру</string>
     <string name="button_to_map_text">К карте</string>
+    <string name="stop_and_build_button">Останови и строй</string>
+    <string name="button_to_cam">К камере</string>
 </resources>

@@ -2,6 +2,7 @@ package com.milnest.testapp.router
 
 import android.os.Bundle
 import com.milnest.testapp.presentation.animation.AnimFragment
+import com.milnest.testapp.presentation.camera.CameraFragment
 import com.milnest.testapp.presentation.diagram.DiagramFragment
 import com.milnest.testapp.presentation.lessonswebviewer.LessonsWebViewerFragment
 import com.milnest.testapp.presentation.datetimepicker.DateTimePickerFragment
@@ -24,7 +25,8 @@ enum class FragType(name: String) {
     ANIMATION(name = "animation"),
     WEB_VIEW(name = "web_view"),
     DATE_TIME_PICKER(name = "date_time_picker"),
-    MAP(name = "map");
+    MAP(name = "map"),
+    CAMERA(name = "camera");
 
     fun createFragment(data: Bundle): BaseFragment = when (this) {
         SPLASH -> SplashFragment()
@@ -38,6 +40,7 @@ enum class FragType(name: String) {
         WEB_VIEW -> LessonsWebViewerFragment()
         DATE_TIME_PICKER -> DateTimePickerFragment()
         MAP -> MapsFragment()
+        CAMERA -> CameraFragment()
     }
 }
 

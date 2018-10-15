@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -18,7 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.milnest.testapp.R
 import com.milnest.testapp.router.BaseFragment
 import com.milnest.testapp.router.FragType
-import com.milnest.testapp.App
+import kotlinx.android.synthetic.main.fragment_maps.*
 
 
 class MapsFragment : BaseFragment(), MapsView {
@@ -62,9 +61,14 @@ class MapsFragment : BaseFragment(), MapsView {
 
 
 
+        bindViews()
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS)
             (childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment)
                     .getMapAsync { map -> presenter.initMap(map) }
+    }
+
+    private fun bindViews() {
+        button_stop_tracking.setOnClickListener(presenter.stopTrackingButtonListener)
     }
 
     override fun sendBroadcast(poke: Intent) {

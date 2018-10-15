@@ -85,6 +85,13 @@
             android:textSize="20sp"
             android:text="@string/button_to_map_text"/>
 
+        <Button
+            android:id="@+id/button_to_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/button_to_cam"/>
+
         <TextView
             android:id="@+id/coords"
             android:layout_width="match_parent"
